@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>메이크앤브레이크 학생용 튜토리얼</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--ink:#1c1c1e;--charcoal:#2c2c34;--slate:#555a6a;--steel:#6b6f7e;--muted:#a5a8b5;--hair:#e0e2e8;--hair-soft:#eef0f3;--hair-strong:#c7cad5;--yellow:#ffd02f;--yellow-light:#fff4c4;--teal-light:#c3faf5;--rose-light:#fde0f0;--coral-light:#ffc6c6;--orange-light:#ffe6cd;--featured:#f5f3ff;--surface:#f7f8fa;--success:#00b473;--blue:#4262ff;--coral-dark:#600000;
+--r-md:8px;--r-lg:12px;--r-xl:16px;--r-xxxl:28px;--r-full:9999px;
+--font:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#fff;color:var(--ink);font-family:var(--font);-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:clamp(8px,1.2vh,12px) clamp(12px,3vw,32px);border-bottom:1px solid var(--hair-soft)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{width:clamp(30px,4.2vh,40px);height:auto;display:block}
+.brand b{font-size:clamp(16px,1.6vw,20px);font-weight:600;letter-spacing:-.3px;white-space:nowrap}
+.tag{background:var(--yellow);color:var(--ink);font-size:12px;font-weight:600;padding:4px 10px;border-radius:var(--r-full);white-space:nowrap}
+.tr{display:flex;align-items:center;gap:8px}
+.count{font-size:14px;color:var(--slate);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ghost{font-size:14px;font-weight:500;padding:8px 12px;border-radius:var(--r-md)}
+.ghost:hover{background:var(--surface)}
+/* main */
+main{min-height:0;padding:clamp(8px,1.6vh,20px) clamp(12px,3vw,32px);position:relative;touch-action:pan-y}
+.step{display:none;height:100%}
+.step.on{display:flex}
+.panel{flex:1;min-width:0;min-height:0;border-radius:var(--r-xxxl);border:1px solid var(--hair);padding:clamp(14px,2.4vw,32px);display:grid;gap:clamp(10px,2vw,28px);overflow:hidden}
+.split{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center}
+.stack{grid-template-rows:auto minmax(0,1fr)}
+.txt{display:flex;flex-direction:column;gap:clamp(6px,1.4vh,14px);min-width:0}
+.eyebrow{font-size:13px;font-weight:600;color:var(--slate)}
+h1{font-size:clamp(26px,4vw,52px);font-weight:600;line-height:1.15;letter-spacing:-1px}
+h2{font-size:clamp(22px,3vw,38px);font-weight:600;line-height:1.2;letter-spacing:-.5px}
+h3{font-size:clamp(16px,1.6vw,20px);font-weight:600;line-height:1.3}
+.lead{font-size:clamp(15px,1.6vw,19px);line-height:1.5;color:var(--slate)}
+.small{font-size:clamp(13px,1.2vw,15px);line-height:1.45;color:var(--slate)}
+.vis{min-width:0;min-height:0;height:100%;display:flex;align-items:center;justify-content:center}
+.vis>svg{width:100%;height:100%;max-height:100%}
+.tile{background:#fff;border:1px solid var(--hair-soft);border-radius:var(--r-xl);padding:clamp(10px,1.4vw,20px);min-width:0;min-height:0}
+.btn{font-size:14px;font-weight:500;line-height:1.3;padding:12px 24px;border-radius:var(--r-full);white-space:nowrap}
+.btn-p{background:var(--ink);color:#fff}
+.btn-p:active{background:var(--charcoal)}
+.btn-p:disabled{background:var(--hair);color:var(--muted);cursor:default}
+.btn-s{border:1px solid var(--hair-strong);background:#fff}
+.btn-s:disabled{color:var(--muted);border-color:var(--hair);cursor:default}
+.btn.sm{padding:9px 16px;font-size:13px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:600;flex:none}
+.chip{display:inline-block;background:var(--yellow);font-weight:600;font-size:13px;padding:3px 10px;border-radius:var(--r-full)}
+/* footer */
+.bot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:clamp(8px,1.2vh,12px) clamp(12px,3vw,32px);border-top:1px solid var(--hair-soft)}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--hair-strong);padding:0}
+.dot.on{background:var(--ink);width:22px;border-radius:5px}
+/* step 1 components */
+.comp{grid-template-rows:auto minmax(0,1fr)}
+.comps{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:clamp(8px,1.6vw,20px);min-height:0}
+.ct{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;min-height:0}
+.ct .box{border:3px solid #c5d6a0;border-radius:18px;background:#fff;min-height:0;display:flex;align-items:center;justify-content:center;padding:8px}
+.ct .box svg{width:100%;height:100%}
+/* steps list */
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(8px,1.2vw,16px);min-height:0}
+.fs{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px}
+.fs .ic{min-height:0;display:flex;align-items:center;justify-content:center}
+.fs .ic svg{width:100%;height:100%;max-height:120px}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,1.2vw,16px);min-height:0}
+.rule{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,0.9fr);gap:12px;align-items:center}
+.rule .ic{height:100%;min-height:0;display:flex;align-items:center}
+.rule .ic svg{width:100%;height:100%;max-height:110px}
+/* card read callouts */
+.call{display:flex;gap:10px;align-items:flex-start}
+/* quiz */
+.opts{display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px)}
+.opt{text-align:left;background:#fff;border:1px solid var(--hair-strong);border-radius:var(--r-lg);padding:clamp(10px,1.6vh,16px) 16px;font-size:clamp(15px,1.5vw,18px);font-weight:500;display:flex;gap:10px;align-items:center}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.ok{border:2px solid var(--success);background:#e6f8f1}
+.opt.no{border:2px solid #e25555;background:#fdeaea}
+.opt:disabled{cursor:default;color:var(--ink)}
+.fb{min-height:3em;font-size:clamp(14px,1.4vw,16px);line-height:1.45}
+.qbar{height:6px;background:#fff;border-radius:3px;overflow:hidden;border:1px solid var(--hair)}
+.qbar i{display:block;height:100%;background:var(--ink)}
+/* practice */
+.prac{grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr);grid-template-rows:minmax(0,1fr);gap:clamp(10px,1.6vw,20px);padding:clamp(10px,1.6vw,20px)}
+.pl{display:grid;grid-template-rows:minmax(0,1fr) auto auto;gap:10px;min-height:0}
+.pcard{min-height:0;display:flex;align-items:center;justify-content:center}
+.pcard svg{width:100%;height:100%}
+.pctrl{display:flex;gap:10px;align-items:stretch}
+.dieb{display:flex;align-items:center;gap:8px;border:1px solid var(--hair-strong);border-radius:var(--r-lg);padding:6px 12px 6px 6px;background:#fff;font-size:13px;font-weight:500}
+.dieb svg{width:40px;height:40px}
+.ptimer{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--hair-strong);border-radius:var(--r-lg);padding:6px 6px 6px 12px;background:#fff}
+.ptime{font-size:clamp(20px,2.2vw,28px);font-weight:600;font-variant-numeric:tabular-nums}
+.ptime.warn{color:#d9261c}
+.pstat{font-size:14px;color:var(--slate)}
+.pstat b{color:var(--ink)}
+.pmsg{font-size:clamp(13px,1.3vw,15px);line-height:1.4;min-height:2.8em;padding:8px 12px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--hair-soft)}
+.pmsg.ok{background:#e6f8f1;border-color:#b5e8d3}
+.pmsg.no{background:#fdeaea;border-color:#f3c2c2}
+.pr{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;min-height:0}
+.board{min-height:0;border:1px solid var(--hair);border-radius:var(--r-xl);background:var(--surface);display:flex;align-items:center;justify-content:center;touch-action:none;overflow:hidden}
+.board svg{width:100%;height:100%;cursor:pointer}
+.tools{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 10px;align-items:center}
+.ori{grid-row:1;grid-column:1}.pact{grid-row:1;grid-column:2;justify-self:end}.tray{grid-row:2;grid-column:1/-1}
+.ori{display:flex;gap:4px;background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-lg);padding:3px}
+.ori button{padding:6px 10px;border-radius:var(--r-md);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px}
+.ori button.on{background:var(--ink);color:#fff}
+.ori i{display:inline-block;background:currentColor;opacity:.8}
+.tray{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}
+.sw{height:34px;border-radius:var(--r-md);border:1px solid var(--hair);background:#fff;display:flex;align-items:center;justify-content:center;padding:3px}
+.sw span{display:block;border:1px solid rgba(0,0,0,.35);border-radius:2px}
+.sw.on{outline:2px solid var(--ink);outline-offset:1px}
+.sw:disabled{opacity:.25;cursor:default}
+.pact{display:flex;gap:6px}
+/* responsive */
+@media (max-width:1023px){.comps{grid-template-columns:1fr 1.3fr 1fr}.flow{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (orientation:portrait){
+ .split{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);align-items:stretch}
+ .comps{grid-template-columns:1fr;grid-template-rows:repeat(3,minmax(0,1fr))}
+ .ct{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);grid-template-rows:minmax(0,1fr);align-items:center}
+ .flow{grid-template-columns:1fr;grid-template-rows:repeat(5,minmax(0,1fr))}
+ .fs{grid-template-columns:auto minmax(0,1fr) 30%;grid-template-rows:minmax(0,1fr);align-items:center}
+ .fs .ic{order:3;height:100%}
+ .rules{grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr))}
+ .prac{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}
+ .pl{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);grid-template-rows:auto auto;column-gap:10px;row-gap:8px}
+ .pcard{grid-row:1/3;height:clamp(80px,14vh,150px)}
+ .pctrl{flex-direction:column;gap:6px}
+ .pmsg{grid-column:1/3}
+}
+@media (orientation:portrait) and (max-width:600px){
+ .tray{grid-template-columns:repeat(5,minmax(0,1fr))}
+ .sw{height:30px}
+ .brand .tag{display:none}
+ .bot .btn{padding:10px 18px}
+ .rule{grid-template-columns:auto minmax(0,1fr) 34%}
+ .ori button{padding:6px 7px;font-size:12px;gap:4px}
+ .ori i{display:none}
+ .pact .btn.sm{padding:8px 12px}
+}
+@media (max-width:420px){.count{display:none}.dot{width:7px;height:7px}.dot.on{width:16px}.dots{gap:4px}}
+@media (max-height:560px){.sub{display:none}.lead{font-size:14px}h1{font-size:26px}h2{font-size:22px}.panel{padding:12px}.fs .d,.rule .d{display:none}.ct .small{display:none}.pmsg{min-height:0}}
+@media (max-height:420px){.pstat{display:none}.brand .tag{display:none}}
+</style></head><body>
+<div class="app">
+<header class="top">
+ <div class="brand"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAAB7CAYAAAC8a4gRAABCBElEQVR42u29d5xlVZU2/Ky1z7n3VlXnRDc556AgJlABHUQEDCiOEdFPGcMgCjoGoGkRHHOAmXdEBX3xNTFm0iCIBEFAlNgoqQkNdKyuXPeec/Ze3x8n7LXPvdU2bcnoT+6Ebqqq65yzz9prr/WsZz0LeObzzOeZzzOfZz7/oB/anH8kPxTzDZw5+8GVd82JKIutiajRBGwWk2FHQMP/cAKgkVT/aayh8suWHRkTkWFHNusQhBkAUgAxgI51hOLv5ccaFqSANZkYl0kCAOTcrP654wtn7rLm/cctG5ueZSGIWP71r3/N9903k3DAJv7T2/xfdt11V9ncO1i79hC55/UQnAksW8YOkP9dAxAR84XvvO+Q4cnVx3bSyecTY4vMpbPEuYiKBQMJEQgCgIgAEYgIiAAIQfKHICGAQBABCEQEgSMhEAFOiu8j//cQUHGbBIGT6loCCMAAOSPMlLDwaubGbZFr/nChPfgXH/jABzqb+nwrrlk6p2/9XYdQOvRigtsJWbJAnGsSEFkiYsrvJ38uAJTfmYOAkX+tvEsQQcTBAeDixVXr4kScITAA6/Jny81e4Mq1BgAnwiALyURAScTNddbwg45n3Tze2O2anY/9wpqnzQA+/Y13v3jcrj0rdZ0XS5RBrIM4BxDDOZe/4OIBIf7le6stvpcvQf798rvFwgkcil+kvlH+nuK3EFX/mX+reCHIjYsIMMwgEMg2fkPZwMc+fdIPrt/Ys1122WXN/Tec+y8NGnt/jM7OjchCRODEVdcStViF0ZYWWnyRQCA48WtRPGq5eQoTKO4TABgQJyDicmMUGwXKDLj4g8AEEBwyZ9CxzZVt6fuP+7KDvnzoCcvaf1UD+NTXj3/3uAx+KXPtfmcdXL4CYCEIhctTPijg8kVSO8ZVDwxvAMLFgwtEnPo6gUhqHsj/O20A5fdEAC4XnwSRMYCLxqUTn/S5D/78gp67/ofvXTwjW/7NGWbiSGtTpDbfkULqzWtDK55PuhaO/Uur/i35+y7Whriy9mr1q/8sPVtpaBDAkTeyaj0EMQNsYgynA5cN827H7/7m89f9VQzg7Avf8eqR9pMXZy6NRJzaaaR2gqtejkj5d1RuG8W9l88n1Y7mwhug+Hf57y3XWe9wEfU2UBpHfj39Aoik+LHc6NgAknGKNH7NFz502aX62e78f++Zu4Tv+fksM37wRGL9LiUUh45UOzb3+FLzBuR3LkxlpUK5IZNwvlmqZ8yNg+qrL1IZAIErixAq1q30GOSUJ83Xe6BpsG6yecntC/Z/3ZFHntvZHAPgqb7x9Z+dvcV4e/1XrHQiEVdcWqpdSJQ/UPlyypfFnL8wAZAfnPkL8R4zPwII6mtUfE0EcBLs+MqgSB0dxTWJuNovRALnpDpGhATWCihGLCY592NfPnoLFc/QIvfHL84y4wdPdLwBl7uRihfnypdfPENwFEDUPUn5v8U9C/IIIL8vofLll0akzxa1VQpPiHJtqYifqnUu3V3+jyc6GeY2kqP2XX3X+zfXA0xpAI+uvutdLmpv6yz5Gy0eTqqbKF8MVzvXn8uAc1IYgQ+E/DMIyihBynghf9M6FKqMwHsBKe5BexMfKjin7k8EYh0afWaHdto5sXq2777moCbG3zqZZN4Nivo96gvlua8NFUT+WUrvzbmLF/WCqpcIqfyFKCMQHRmVhkTFRoMAcPn/kT8viMmHSiLIXIammTx1+UVvXjJtBvCVy77STNPx1znnqjNIasFQecZv9HxRQVt3kgWQOFAZ+1LlY4rvmjxGKNaE1eW4WoQwpmD2u4kAEOcxeOYySJS99t1fOyAGgKYbfENfIzO5EbnyoPaBWLDT1EEpOqjzwR4FAa8/26uMoVoxqjaS9mj6uKw8TekB4bOOMEDM/39qBTMasrhfHn/9tBlAa/ixrZ0ku7isiGpJLSr5KDjfDf5l68Xx3sL5nV6+XlGnmUiwA6cMTUS9h8ojhPGBCAU7pNxpzgFsaLcZo0t2EhGKkDzfWuczElbuvfAsoqPywNOQj9zLFFclL0T+RUv5bI5KNwESzlPi0pOCIUKVTyjdjZTHarGmgfcsjaS8lmRooXNE8Yv+cgNY1167PRn0u9ItBy8kf+ninHezUpy/wY0Wrq+KGRjE+X53pPCBMvIlfQJIuOX8qYn8fVGXjeSBoSuOCGWwhfWZiFtt294RN7x3DsTu6GqLTso1qQgl3KFUGG4RmIhK8QJDEQHEAS6DSAaQVceKq2KpfAMJmH0MUv0Jyn8UDkxqFWreCFTgBy7d5efnH933VA0g6vXF0bENAy6yPuUhyiNaqZ1ZxS50ksGmGQxHICaIE48PiHcdUhlMkU/onaYcG1X+gcAgCBVZAhMaJq7STx+JU/eRQ2HABCNgww0kNIsY/a68dpnZ6JSv7oXUmVt6NhRoFYl6SJfCCSCmBYlnAo2ZYMlg28PgdBRMApgoT1nLMIUEUgTAeVBbxDcKa2AGbPEs5CPk6vacCCJy/TtyXwvAxF9sAExMFmGQVaZ5QfRKQGoTbDVnJxy4xxHYcsGOMFEEa1M4l8E6V7hJLgI0Cys5iOScq44Hjf2U57pPFnNjSLM2Hnz8Ttzx8LUQsd5diM4K/LlaeiYUqSURkDlrkGZ9EMR5hO0v5O2UlHdC+M0qSPQZDEgA5+CEgTn7INr+ZWgueQ7MwBJw1A+Bg20PIVl9B9IHfgpZc0ueKZGpAivmYoM4qQAtDRxZ4eq4qYwwiFUFImj0DbTjafEATpyEe0Blv2phUpdg58X74/87+pPo75v1Vy9cHPSsY3DRZYxb7r8MjbhZGUsFvIg/LqqdWsUHgJAQmuGLraBm6o45KsOHqDhRKiMABC5N4WbuhL79TkTf9i8FR62u+zaNWWjM2hZupyMwed/P0P7DV2DSDZComaf3cCj3FhdG7MTluIBwdZxqFDXcmAIiY+KkFU1bGqjTII2++RQGMGjgVQe/+2l5+eVn522elSdJIuGROyXM5c9zFkNIJ4m6XroEv6QKbgn+5VMIAsE52CwFbf8qzHnFNzGw8yt7vvxgsTnGwO6vQ/+hX0bW2gJwaX4W1NDNPJ4qwaMyDKttx+J2XRmDAdxpJjwtBmAz62+oBseW0bdzFlvM3hZbL97laS1fxqYJFhMe8yrqkyCgpLBmII4RN1Ihdl2QHHlcVlS8A6nBzgBELLIsg9nzHZjzkrMQ9S98Ss/Qt/gADLz4c8iiOaA0q7yLDyhZxRYqBQ/uiXxWVqRmiTU8TR7AQCQP/CQ0AeUJBI1GHwzHT6sBtJNxOMkC6/RnP1XnZw4IqR0tgAMxXFpt9cowdJCqjUKd/eU1GIBYC975WMw+8GQQmc16jr7F+2PghWfBchMQD0VLUcsQ9uAQw9chAoMUDw8wQMal02MAJlLWWCyUqMAvL7ww1g8/gaHRNU+rAawefATMDHGuDMTDgK2ChhGgk8W9U1W2EvVs8NG/QMI0s4KbC8OyKdz8Z2H2807Z7Jdffvq3fQmivd4JZ9MKVyHR6WL+V1ek3EFgRgpNLMABMvFTxgGiqc8rzqP0omZdFXTK6xuD4c46XH3rD3DsYf+6SRdbP7QKE52RnkBPtYOh0TapClDiLO5feTt+d/+VMCYu4GfKMwKpB0Q6UxIIOA+0RAjIMqK8zkYSlqVLDEBq6V/FRnAZMtOPGQd+CKYxe+royTkkG+6H2BTx3B1h4v4pf3Zgn7dhaOWvQcN3QyjOn4HyDeacK7IYn3JXVdOgLl78NXXTYwDsSFxRjQIx4PxBUBVpnCA2MX5zz0+w9cKd8bx9XrHRC933yB9w4eWnI8naVVpY4gHl+ZtHvQX0LD7gpKLEnLgMhgRMUe10pFrJWLrAK4HAwTFsKxWwBTKFTFJXuueJGdZH/NYh2vM49C2emh6Ujq/ByE3nAE/+BoCFm70bZr7gNLQW7tX7sI370drrbehc/2853F08mSssON+IvnJCNWSy8uMORGynBwm0kQ+EKnSqZMQU504ZfAgJLr72K7j7/hs3eqG5MxchjvqRug6ELBwcBBksLKxkEFg4pLCSwrriT6RwksEhhYNDzAwmU7nIEo306KFUpWUdrzDnP2QYwECSFRfPXX2xBFKitVJW9jy4lHtAgRvYCjP3Pn7KZ7TpBEZuOA208nIYJGA4ROvvxOivT0Uy9NDU8cB2hwHz9gIkC5FHFRx6JpIvRulSuTAIrdb0VQPLIEPK6lqJzIW0FTAzrCT43q8+gwcfu3PKCy2ctxVOOPJMzG4thLVZ/tJY1RSKB2YQmDjPh4sCT4BIqNQtf7msgjSpYOcgtfOl5epQIKISlA3TXV3iVUeRyzLEO70aUf+iKZPm0d+fB151fe7yOa+QUtxEPPEoRn97DlzWm7zDUQvxjq+EOFeRR6pqn7VBjUWgYgHRZJxpLAebDL7sWeHzFBQ9NE7OhjGeDOPbl30SjzyxfMqL7bDlnnjHkZ/EzOZ8pFnic/Tq7KagZFoHPaqsnsuCTJnBsaKbcddiCQpDzoQQzbZCbPobBo2I8xivjPhdXlDqWktn4VoL0b/LMVNnJ4/fAnvf90CmUWBSVASQAjJNYNVNmHjof6b8981tXgwbzwFgIVzf4QoocDo14VrVYpoMIHUZ1QqrFbRqi3CUharKGQEwJsZIshbfvGQpVq6+f2oj2HpvnPDKT2J233w4m+Y7XTyxsqgAV3GAducCzQ0o1qOoO/QKKMtHzCu+hMiYjJ73H+sZ8Rs2tM2nJxO+zTDDcF6gIvZVSgaBJE/LnFjQlgchnrlVz2dyzqJ994UwklQ8PtJ1GxIYBjoP/gzibG98Y9Y24Hm7QWyWHzeF6TKHNDhmRRmSMkNhsJBMnweIjK9oqcOIlFnoIowUtAFjIgy3V+OCS5fiyXUPT3nRHbfaGye84izMaM2HdZkiV7gaCRQB/KlLwHktoR4IFowaSGgEeU0WjZiO+uTXjz/gE+u2fnThA/t9aou33facyaT1ttSadU1mVYYtuUAufxkuQmuHl0/5PJ1Vt0FW3wxQ7HNSUtU7AcARZMNypMOPTMGdYMSLnlPwEzwLiWrHclADEF1JkenzABYoGZYBc6eq3xepilDhrDl/eVIYwbqxR3HhpUuxfuiJqY1g673xtsNPRzOaUQSBmvPnUUeqnfk+xzdVNuHdhQ+aynSQKK9KuoxgWvzPw50nb+mPB28/deHD95361SOWbXH8by6alNnHdByvZ6rFQERFJL8DmltMHfm3H/wFSCaLDVJjOqkUldMxpOvvmjolm787wHGOARQLUHrBKiYTzy/MmdRlUY2ANqYxCHQuwJyD1KzwDKIZMqTh2gZWDa/Aty//FEbGBqe8+K7bPRtvfunHEFEzQB2dk6AMJ1NYuj4KNLGENBGzNOOCwyCUsZAlRLJV1OfOOPWrL/3e1sdffVOGvg+CyZWElyr+sBniLZ4L0xjo+QzZxHrYVTeDOC9Ti0he2oVHGUumE7kM2eADU7+MWdvCcp+vcFK9MC3qhXgGMtHmRwK9DSDTLBRN0tTnXvgyqHLB+cNGxmDF6jvw7cs+hfGJ4SlvYJ9dDsIbDjkVBlEt+BMF7FCVioYgj6tRqXwRR0fHJeOmwgGdwFmLJE0Rt/ifT/7iyz6w6M3Xf6eTmXtjDoEAC4Noy+dN7f7X3A6eWAUQQwpSasXYEcUaEgE4Qjb80JTOmptzQY1ZhfF0B7/VnwVXhIirKqgAkJhlegwgQuVeq91A9cqbeDYthXUCKvLrRtzEfU/cjP97+dlod8anvInn7PVPePmBb4e1Nnh5QDdh01/bhaXeks8V9BYwNGc/r7R51pATIHMOZOQ9dNxxDIqvidh4EiYspDUfzQV7Tg38PHEjGNbXITzpp0Z6LbKXydUQ29tXm+YsoDUnZxQXEb9MQU4hEMSplz+dMYDRtV9fcvPnamF9OQXc1Ri6KqUjQiNu4q5Hrsc1v7t4ozfygn2OwpyBRbAuU6XRHoXpgDxMXWVrn0O7gKEcBJbiDUucQMht96JdV23Z1xi4yVV8Pgc4C56zO6IZi3tH/1mCbO2dkDx9qJFmPbVM9xBIewSS9CbtEEfg1tyAguZfr/gyuLpGxbdmTJ8B2AyoExOrzo5q9euUWcVyLZo9fCJmMLNv5kZvxLCBoThML8lHwnUKuFQNM6SbZpShKm4i1bIF0gAUgUFmfmug4ZhGnUolrQPMgv2Sqc7XbOwJ0PgTBfvYn/nECsaDriYynE3gbDJFJkDg/i3yVFFR8UHKnAqQDAhBNHLT6AHKCkF5wcqqyVtgVxBWL+pQng93kgSHPev1eOGzXrXRG/n9n67BhrFVMGxQ8f10j2DJlhFCsAV0UBggeaiheerny+i6+J0CDN87MrLGiJnHAYLIEs3d2U3p/oceBicjOWqg6glS96CaSiIpxE7dxCOmP8+rVScVQTOUSxhAFJfFAdMdBPpc3x/A9b4AUsWoiu6tIu8k6eCFexyDVx/yfjBPzVZ6fPWDuPzmC4rfJSAOz20RVwFF1QFbPQGFC1XzFrohlaSOKzhwRJAMV//pczeOdmz7qCK8yp83alE0e5spAXY7dD8ItqoaUxdbmTTVBw4Ckg6QTc3bJI4ClmwAyFHIZBa4ohWNIdNpAI6diAgY7F83s2+RkhrOXidRQJB0Ehywyz/huJedDGaz0RLxd678NEY7gyDmnDYeNGqQqva5gA8vygWVL5jUceTLweoog+dyNhsxsjYNDo3x6aM/ef0+xk28IrWl8TigMQtmI2wfN/RARUXM0Ua9KyXAJioOv3Vw6UYkDCgq+ggkZJvXwP4ysqCS9y7TeQQAAWeuDKhClA1hylV+jQlJOok9tnk+3nj4hxFFjSkvPji8Gt/8xel4fMP9iExcJTs+AKSqkONQ0KdrMUEAlFBYzJHcmgrvxCBiRDEhjhlx0yBL5YGxseT1F/7zhx5tT675rwZlA/4odUBrfh6ZT1Esk/Enqra46msuNLbgHgGQWLhk6oyI44FgPYmmOu4kLAJtHhI8BR9AIpHaDqtSj9IFlV/T7UpE6KST2HmLA3D8K09DszE1EWLD8BpccMmZWLn+j2g0Grl7pLwY41yBgYvyOPAl0Xp9pGJLafEGKZtFis4bFqQd95gdtbdwRIMp4eYf3pP8cN03v5Vs+MF7Lxig8Rd2MuePPefA/YvBprcB2/YQ3OQ6GK5lGcw1fMS3xed1fgebTR0DcP9CCLEPV4p1JbXYJBRgJlVlddoMgKnqB/Y1aKkxb3qAImkH2y/YG+84ehkG+qZmzAyNrsU3Lz0dj6y9B3HULHJ2b+HMXEHODhKwfMJgUxuBN9iwdZOqLMMm6VnnffTarwMEueSE7c7aft3rBr/3zve1aOKATpop7D3/XTxz66lr/+0hSHs9cv6kKPSwABiKeMCJr6OUL1RsNvUJ0JoTWrV6DF8xVZ1MZUDoJGC8/0UGEDNJR52f+oWLQmSoQn6ANEuw1dydccLRyzBzYN7UL39kHb55yZl4dM1yNOImnLiqglZL96udn+MNuSGU7ecac6hTeUR032HZaOKQgjbI75b2r7vvmss2DN31vL7ItQQOSZZTL0sjpwJIQmvq50A6ChLrg1bV4Fx18tcp1WUqZyenNgDTrAwm9xweYSX4jEx3M5U0ts50xQCSY0z+nHE+yCgtWXWwIckSLJy1Hd559FmYN2vx1LBpMonv/vIzWLHmDkRxjp33qvnXy7t1Qiqgmyt163gN8CnOcinSqpRJsOah3Zo0+RKDTquTZkht3o/vFUlKpIgRz5j6WdLBBwE7EaZ7irRTBc/CIOeZRyQO2EgaCIoAcL4xVC0hbwKlQDcpaC9nns4YIJaSDNrVBS7+4CViZC7F3L4t8M5XnomFc7fe6MWWP3QL7nzoOrBhdJKOXzvy8jKe9OgfkIv7YOacEIpaT6EgLP2KDmSpZBLAWmBy7MlZ4iwcWKGCqj9QpGjkjWCmYP8AgKRjYF2AKguSFJZxpdIN8rmySLoRA2BIWedhBJsO5KFhbxTVrpk+UigidqU+jS/L1s5YIlhxaJo+vP0VZ2DLhTv/2YvtsNVeeMMhpyC1CZgjcMHsrdrNlQQNlWyX4vtp1sa9j9yK+574fSUYIKLLxAjcIySHogPCqHOSxbMcsiGQUwIN4kUb8us5WGqAoqmDWJlcUzt26pA9qT4/VCQOggA23cgREEPYgMgFUjlVSby0CqVIkq8H0JFp8gDIbGF9pfCCRv24UvXKsgTHHPRu7Lj1vpt0sTkzF+DQA4/bbPrSi579WnzjZ5/A8pU3wnDDq5PpI0AURqBSKQLBMUlk+iWtqGfloqqKAklxiEfgjdC53djKir1UB6CoRM6lBpMWnoo3ZgCNAcA0ATfhpfRIaQ2Qrs6y5rsA1J6eGMCJFVJyJKUMShWQkMCJxey+RThwr5fj6foYE2HP7Z8Pp7APkbAzyAtyeNdfWoGBc5GxuYNQpWSp/80JxDTAjRlTYAAOtjMMzg8nUK1KF3QVlamcFxuC3RgSGPUDHCtWkhLc0BUNXRUsbrsRm+kpB0dRw5XBn268rPJ/yfPZuTO3wIy+OXg6P63mAFhp64WBomoKAXklEpdTyK2IhU2IKGy38mdpGXsAZPqAKZo907E1kJEHIRwF8C8XVcEuPQ1RenAksOn4n4GCo/CXlNVYKOJLJdvlVGwwTVkAGxavjOQraZUuEBGYYkx2RpFk7afVABKbwIkUbdQ1NpCmVJe0StEemB246ZwUykSaWk1a/YuBZAjZ6GPd+X86iYk7vgbTXh8ykFVWonc/lIpafpkIdvA+2M5o79N3dCUoHQFRVMhjhNwIjSf4fLkwls3IA3vrAzhbZtDVjicKlT2ZCOtGVuLW5VfhoP2OftoMYHB4leIP+tZt3c9V4RYUiMvAOrExR2ne34BKu0ugjEAYwgLjJjF23Wno7PhKRP0LIALYiSdhV14L2nAvwFEh/UaBeiiVx7EOCkVJxZoI0Ya7Mfg/70Rj65fCzFiCSl1kcg3SFZeBJSm8gISZKSjQNPANolS+NTstBhBxnIiVsOYbhLr5onFE+NkN/4nh8UE8Z/fDMGfmwtwNoiss74k29ErdpvrJTjKOPz36e9z8x0sQm1hF7xRkpzk1yykAhSo41tksA5kJZ51lEhNIy1gUHbl5OiiGYcYfhLvji0iQw8zkkBe22GgRuSrIlIArHRol1J0yMaLBe2DX34mMTB4YSt4RzGRAxgRBbQB6ke+l0OAZE5K+iDvTYgD9fXPGR9L1GSGLtDpoHZjJK8cdXHHrN3DdnRdjZmsejDHVDuRAEziUg/MBU1gv15F0CX8KgE46juGJtbkwBZsC3PERP6mb87Cyp/+IEGJwglZjWMAdklwnqDrVGAhobvl2BQzn1/FatCUyoaAygnM9noikpk9QhHVEkKgBOAdjSpmbvLOJVIxFzD1TXMmFhqsUkNhALLVHxpL2tBjA5Hi6zokdI6Y5InWqFaB59yJAFDeQ2AmsGx0vtb+DxZGqjq87gGtawwHO79nAVUql2sW61MiqfnnfHqbl6ogBl7rxiJsrMR6Pi9hxAP2a6VpG6sRUqZUqSonPw5UuUZV3dPUvSBcXJLifUnamQnpymFcQdjqXFEcnim+pyU/FCjMLLDDEC54zDlz6lweBC1nWkPBDbDyYUWkEFNtFd+iUJVtmBjHnIA9HuWoYGRhjqv82xoBNBGKGIUbEEQwZMBsYE8GwAVOUu0IyII5gKPLcBE21diEXkHqQMSpwR+hhXjS4EhOHjojwE8ZQAZ+S5/ApBXAp9AMrudsgW3CFVG7xcwgbVKmghWlZN1LcBnFSlak9qONqBS5fTNKbzRdLuGJHRQSIxL/b+7hlybRkASeeeH5Kwpf60iYF+nX+YWqLXp27NXUOlbaoqKjSuAGFi1+G97kiKIW7MPjdPg5gNpVResHq/PvGEFwm/3P+ibeldNxxto34ehMVxM9KFr5gEAtDC2ME3IhS573sTi46h3zW4ZT3E0gILVQSuaXhiNJc6sKLUKO79uAE5KeMoJ1FmKD+/55WQkgjGbgwm3Trq/508Vq3IUEzhDvr+XgoK6MDIvIt5tKDPFFnwNTKv/rrXtMnvFYeLzDSSTuSte3Xq1TSzD5/IjXjJuIKtPHG4wKpNt0RVekcKvaTdFHQioBRvMRdUWJXWgReijJIHSVgfoUWoXa/FPJ7QkBfkzGRRtdO9h185bQawNkfvniFkb5/KxkvpSKHLkTXe/bqwAwVIIiHNHunBhrSJUWjc07yh62lfZopU70spRHk2ckEYwh2kj513ieu/WN5vZ3ecvldE1n/WRFHOaGDVS5BmnNfNmDmEq9Uzf8I1cL1/5RgUklEyXN5UgZEHidWMxACuRcglL+p7f5SfbwZEUY70boJzD5pc9w/AGxU5OY3V9z/hxcdvocQ20OIiZwT1YoNZRjhKeBFkIuUKhBb6gWt1nn+4YsUFYBpCXndi6C9kBOADSFiwuSY/c8nb51/xvLly4NtOmu/t9+0+8xH5s6I3POYBNaJEl8oKGRaszRolFHHgsIbqDybvUUV7ey+bq+DTgr6IcvMw+MJVczhT50i5SO0mgbtNBrckA28eecTrrpxc3GVTSoffvCzh7+J+uTsqCHbO6kRIPVMnELOVWvbVy1jpF+2Jz162peKA4pKHpX9gqSoZ6yJElBsHFRy6swM23Hr2pPy6QXjB3952bJlbgpQnx771sEfGIg6ZwzEMjcVB+uK6NyiqnuUjCPtkzUPUDN4wtinWwMQYJ8pifQGS9S6kDr+jAhMRMiEMJlFNw9ls07e9YSrfvuXAGubXD9+79IjF8ezkuOJ7bFgswcRZrBRPLVQMtvHAU7vEN/bTowgSEJA+pBuYcSg/u+KrCDULbROJg34IcnoF9lE9o1zT7/mwU15tj9eeNTuc6IN74kpebk4uz2BmhH7FFLXl/R4F1EzgkJamKtiAT1MSuBUChyminpOQUX3EMA6B+sAAXcc+HErfEdb4otvXb/kp8edcvHkX4qsbg6TkF511ou2HuiLFnGazbYWsSlUDCyE2TEJCwEW5CIp0QZJMkJkwE7IcfH0BoD15xC7WDJkYBZijqstYTPHwkJEOTxpLcCROHYk1kGMoRTNeKg93lk/umbgiSvOvWKzxqesuOb41uLH7ty6JXbmZNQ3QBw3LbhhCZEV5igCYPNnNcwOTCJCORUYyOcUiWOI48RmBGcIbAUSiQFgXUYwgDGRdDKLZswuc0IRAHAkmcuIbIfEkYNzrmHiRKQzabLJcUdmtDXnwCfomPMnMI2fp6wtu+LCpc14+W/7W+MmasQz04glsxFxAmo5igw7sgQHGGJLiByITS4pButEabuwi61NxJEFOwGTWOciYmPYZakRzjInFHExaMc6MQxrHYx1mWGizDhJkWRWrNjO4ISLeLadO++AlHDFZi3G6773QpstOSQDIDObJm2xgWEQXMJwllJHRpwjyRlzxhhAUkdWhGBya84lfSwMkRDHQsQCWFgAjcLUiUUAAwvLxhjAAh1rESNybOAE5DJwxrFkGcU2SRwNt8eIjGVM82eTPcDvP/P2XeZtePx9DekcAWu3N6BmXv0sdXgLylIZRZcTBMlXrCTAzWtHQIAuhv2u5fnvahq/pbq2eN3cMUd0nzV9PxuWmRfs99mfrNyUZ3v9OeftPAy8y5E5UiA7AugjYsqHSfiAzNXOax8bSKX27WcI1RpTi0EPWoyyZC6pJLo6AEg9nxOBWJsY4ifgst/G5C64/BMn//JpMgDCg2cc9Z4ZnbFlLaQLs8zBigSpadg+oEUd1BQwaPEnLqJ1JY1er310NXj6Cp+PJbzhlLWHiHNXPJ5h5QZLn9jzS9f93ymLTCL0yn//j5Mz4o9L1FjgCt6AZ98oOLqLcuYzA11WrlciSdG36uEe6TSipk5CYRkwzyy4QC+zVFiy7w+MDp/yk3NOe/KvaACEh5cdfcaMiaFllKVI1NsmEQjX6FiKG19P7QShIHIX2EEUzA6sFyKpZ0ey5wKIx6RzIIuADCxj1Dxtp8/96pz6ky1dupRvaSz4UtZonWTF5fq/xBXgxeX0Lyl3qwaeXDBroF7f1JNTu75PPmDMRcfz38W1xlsmjyB2jy4QmEYTrj15B09seM0vzz59xeYawEbPlAfPOPbNfeNDZ0qWIhEtdyJVhMvq/RN5GFhH7LpE6mFVAheTM0qclEoZtOB8kABlrIQR1Xipkq6mlzt1AMHRLLTPvvfkg9/ddaQ1FrzPNvtOsjafhJpPPvEvQP+dah3HARuXqPvlVwIWCt3s2t05yMW1ApJOqbUn0mioQGCTDqjV2g99sy84funS1rQbwINfPmmL5uS6f49sSrZMYcTrB3YNSqIaQleNhqEg3yXkMxDJCSzlfZBUjAKm0vQpJHd4/F+8dxHkVK/gmOAKSnYAsuIdzIrw2T985OWVVutbzjlv5w5Hy6z1gxoCwE3/dzEuJ2j81BQ5kZpuoi8c6eYW//slGJNX0rwEoZaBjm2gKrGe+QTYJIE0Woc8glnvmHYDoDV/fPsMY7fuVOMTEejVloFeBdSU77msdFUvyN9w+WKElbpPURhxFGr/SwmauTrkDKXGoZsAyIszSd7owZQbwcwIs2ckE+8rL7lO3DukEc8Vl+U1eHRj+lpBHLVaA8p6QTBGVjOL1ADtmvcId7ryMEDtWOFgmKUuovl/UxbNzHuf/8EP9k2bAVyzdGkUZZ3XOGvzMWegSpK1OseqhS7s2vodozlBZTtXMBEsqNbVAruaGJGOCbhU0NQBoxPAWZDzcz6lGlCVXz+xFg2kL73m+O1aEKGMo8NcQcKQwvVrAQwdhEpQsKCu9vTKeMopH4X7p9rYNyeKQB7MmqsROrUyWF3oonaEAIBYB4rj3fuai/acNgNYvOCxRcZh10w8KbQa2ghPUKhzn3TXalVPB4LgRh8XgZqXtgrXY6QLwnJqNeSByWv6K+kXJq7uMxMgYt5hyextdn3Jd389n4h2FiVI1VVpFCVSobIRXwrn8N+Jb2YpnUXqcp1fq2hc1QgYxXZCsFlcDwqeyjY0alhK7EJAUdOYZv9O0wYE9U9MbEmQ2c4Fd1fo9gvIcCVLoqXcqlfFIeWrfHFdP6vqAqzGNZNyqq4slDhXBHyqjaw6WymYZVAtNHtcoWEo7k87Ww5sWNdnmeZbV3P9RIEyqfTyCqz6JJVenQ7OkixFf2Sw1ewBRMZgtN3BurE2iE0l8yoK2+gigXQzJoN76a6i5c8p7LacNgNwQ4MzjWQsXKMCSzFlUzxJxDk15o3CRgWu6ExURbvoKg17LIFEAjVwAKAshRWBa/UBHIGSSUTOAlEcpJiCPLAkqrW1q9/V1zDxkxuGm/MbVO02TdGqAo8g+halNh4aetl1LMUudVmKo/feGcc+f39sOz/nR45OTOKm+x7ChTfchtXjE4gMhy8/GJfenU7qY4KCSoHWbBI42P5pM4DUIiIuzjX0HqBH1P2nDppKJAtkAkVLiOfO5utbaNzoZpqCE+iSBG6bPTDw4tejb7u9QVEDydpHMXbFBaBH7gSiKLw1Jq0HWatWCjLrOGYWElvbcdKlyVsRQalezEJX/z4RIUtTvPG5e+NfDj80WMu5M2fgyAP2xS5LFuLD3/8FhjoWhinwPqQj/ToJRk0pLe/JK7PmR11BNJFpMwAg81O4FZjDREF7dnk+5VU/qcrBQZNnTdpVamauASJWsbQkbWC/f8LiN30CUb8Xm2gu2BocNTH8H+/Nj4WS10fqiKnm66oeegGsE271xaAsLVq2Q8CpLirhXXV9ExS7sjAgawXbzBnAW1/8gikXepctl+DV+++Nb9xwG5hjXz2sGZ3+3aQk70h7AsW2KqXpDZtk2oLAHqBpqHxZZ7fWVDAU1TUQOirBkRDKVeNpy5prOgm354ux6C1nBC+//HSeeAAQW1h/bWwseS4BS8gUMsaCHIu6IR9oBdYQRto64dT9iOUGyJzDfttsiYE/M7Hj4N12Qn8cBY0idZAHUoOEiWoQsSeQiAKciKg9bR6gybGw68CiB4qnCCAQjQ+EBkAQIM3gnM0tPYrKGamB/g0pbRsWgaQJsu32x+K3nomo1d2cOfHwPZi88gIYYwJauag+fy9WpqjeRHApEzWMoC1qYmg+BFIjWbq/sGsjaCJImfM7i8WzZ/7ZxZ7RaiIiRla219XoEEGwV0cIdfZYSx1z2pzLps0AOk6oTwkmlONVoIcn67ROQkInKKdlRQccjnjOEsiah5E+ejdoeH2eRkZRrVJW1PlshnTRDlh0/DLEM+Z23dfkEw9i8NufQDS2HogbNXYsqmaJsEPYN2TAWMyMI3TaIcIYBHYVE0eUQJVS6dDEz3JN2GD92J8v07ezDJmgd/6vAKFS4MqLY3kMBoF6mm9uzwTp9MUAWZZToeBn1XudKAmqX04XcKSQKhEB2RSNHfbD3BflegDJ0BpM3nMDxm/4EfD4n8AmgnAlgQG2KZIZ8zHvbcvQXLBN9+KtXYkNF34M8eBKuLihjLELVvPHi4aUhXIx6iguOHY+YKyHutXg6VrUX42aVy+ECubxXStXIc0yxNHUFIs7Hn4ck50MccOg1jpYp9RWwlmiTmmqt9Mp2h25p94XOGUMYBqxBGlPuQhao0ffsROlVZuvKhuDySu/hfbqh/Pq3JxFmH3Qa7HoA+ejdfRJSBv9EJvm13AZ2nF/OvvNpycD23aPV0vHhzF40VKY1Q/mO1+3fyvkkVTXEWpi0hDAwGByvEMiVLhNrT4uNfQtLPT4L3HXC4uY8OD6YVxy2x1TLvSGsXH8/A/LwRF77KJXylfiDV0+BzWT0bA4gUwjm14PoOb21ZW6tWiBz91rNW1m0MhqbPjxl7DFuz4HLgQjo9YA5v3T29DcYR8MXXQGoqEnkXCEGa/9UDRrj4O6bsV22hj83jngFbdDms3qvdSTntrMikAvMCeqEJhJJtuT6CdR5VrqQua6Xn4ZKJbeTaVkVRLJBv917e+wYWISrzpgP8yflccEaZbh3pVP4mvX3oL71gyiEZngaAlEL4nCoFO0RmAxPVHB7xXplgRiOy0AWHrNNdEdtz2wHwHPZjZrOZu4+eKPvH/VU+IDPHjqS182A5O/hHM5jTEQY1LQqJQsHc+YpGLwU/n9LO2g+eqTseCwt3ZdZ2T5TRj8+ikYeMW7sPDwE7oBKZth3XfPgb35pzDNVtF2XaZfUjlFVueyrtLp/oWYCZOTk8e+buv3r5lF6fVWwtw7aDAtJ5HVikM1XCkQzy6rhmmaYsmsAey4cD7iiLF2dBwPrRtCO7OIjalNYw85AFTVMhDMBKKgobabqEJsQGnnbsO4XMgcIkTPojiK4QRk7RPSSb7wQjfYkx0d9UYBfJXOD5CkWqRfSLEydSli+AKPIDIGk1d+G5O7vwB9W4ZCUrP2fAHopPMxY7vdeyWeGLziG7C3/gzcaJaaVWH9XfHzK4xBFXFIIUJEBAMg5qYIUtRlxqgHmNV1Pks3RKsp6wSgGUdYN9nBqhWPQyAwBdmjYUwwBEFqwBOrAhFJmG7X16V+b+IsEDf2lija2zmbj7lL0txrsNmS+/u/cNO4nQlg2abjAFIrVRaoUyDMqAo7lXa0ogs4ADAxovEN2PDz/+w5Mm3mDnvnsij1M/Oa7yO56kJwHPson4uyMfIcn5wP2MomlErH0Guz5q66WvFUzReQMJ3TKRk8QusESDKLTpoiSVN00hTt4s8kTZFkmfpehjSz+bM6hyzLkGYZOlmGTpLmf2YZkjRFO0nQSTMkaYZ2kv++rJwX3OvEV9VFbaS5SJRDlnTgskwNe8tVSa2zsHH80cM+dva+m+QBDJFUitect0Z5y9P4dR0llOCYoELLh+IG3L03YPgPV2HOAX9eVGro1svR/sVXYYggZdClpWBUY2X+EnW3DautSkXEnxuBMQZZBCDVi1fXdwsb8q1ziAEcsN1iLJk9I6SlBUCNBDiIQHECqefEzVqLu6CdCe59ci1WbBhBHJkgRfAZmaKo1UCiUgeBqHa6O4Cb/S2T2LcA+MgmQMEI0LVAI1B18ZLoUm8B6khwKlcPEBFh7LKvYWDXAxHPnFqCdey+2zD+k88jEgdXStSje2hVMCqOtLvsMUOvGChlrc3Pt0D7mLpG4umXP68Z4ePHvAzP2XlHPB2f8XYb3772t/jhbffkvHOg9/2p2CPQyaTu91eW8xPGQWHZaaojgIuMX7wEuiduImhgrBAqnmK8WzU4kcGrV2DwV9+d8uEnHlmO4e+cATMxCjEmBEhI18MV2YJKFVFdeqYAYq08CBsiNlJXdaReo2pFYLMMbzv4gKft5QPAQKuFd73sRdhl4Txk1tVoExqtDGe7og5UIRznJ2LhSJYcfsop/X82BogQ6Wq+56eJCzhpXVUrpYZRRwvLngFMAZSICIYuPx9mwxMgE9WsOcx7q3l86jTSZFQt/hVAxIXLk4KQGWjt6isVhj7QiLH/jtvh6f7ExmDHhXO9W0e9hwJVWirBLEF0GYVvYc8rCMnkJP1ZA8iyzKteaU5b16weCqLsKgoHBa3ODgKXJJC9D8WCw98+5XHT2OU5cLoFW+tUiRRBn2LOutDoKBwPGOL35eYxrbxhvahLiPIqXXk5BM46/G980ixT0jB6gkhdMzBUcnci9fGaOXs7/x2rDlm4cOLPe4AoJEmKsrhe6t5+x/uV5lICXgSUJciW7IJFb/goTDx1xWzui46F22FfIEtUpOvDO6dkUlGbyhE0ZNQyUynYRGAhIA0pXuQnc+mhU0yEycTixvtWPO0vf/3IKO55Yi0iw3r7+rqFLggRBUrhHJSOvVGTIUiWXl/HAnhKHAA+NyYdyLp8JxL5Tl5Nfw5KwMQg55D2zcH8N52GxpxFG31w0+jD7Fe+F1nULMgYWjy6ByCj3V1NgCJg3ZSLaC2SNGGnSRV6Dp+qwFkIojjCRb+9HT+/9XaMt//6gpgiDitWr8U5P70Sq0YnYIKaQ65t6OcSULj5ekjMVJ7YEOzk5KjrtC/cZCi4dC/W6bNcCyPVpF8KUIhc3jFERZk1EcKMY09B//b7bNIizNztQIw/92jIDReDGs2K0FF20ARxGnlmIJVEkMKsRcUqXJSDjTFFycyPcxWdB6hwulT8aGeCz195A35w6x3YYcE8xCbyAo2KLQTVI6l7RqqBGNC6hjVqeJFlDU5MYMXaIYwmKaIoCvJ8qaGCdZyA2OSkGBNDbFZNV2cTgV0GOzn2ses+e8a9m8gIKvBzVXbUULCuwZdup9SrFYUUZlkHjZe/C3MPPLIb5k0TTDx+P2Zs3138mXv4CViz/AbEI2uBIhsIxsEXOSipsopoxQ4JITtxkuv9WZ1JaDeqYmiSoFjDxeKuHBrHIxvGoIIGzx1wUgRkYfBCdZdFqusHgq6s1RAiYkTMgZkEPQbQvZL5PZjIQCbGr3E2PY9N43BnoqOIaSsSgJL2fS6ZOOdXZ3/s25teDIoiwDLgVBcrVDdsQKYM9XKqyDXpgJ99BBYe8a7e59xlX8P4dT8AnfQ1DGwXGkFz7haYceS/YPy7yxAXfEGt3MXUS1i0TA0LllBZUavoYeSFCAhdPQfURYDS2kM5jsGQSvgpUAhRQjvWCTJnYYj9+oiAmRGZ/FlIyb2WvYahzjG66eHV7MFaoFp4aib7vauXffjHAH78kg99fsGM+Y09ssxmG9Y9dM8t55478hSrgbrUKF3dv+XCOS3SWFG6Ack6sNs/C1sc9xGw6b7E8G2/ROfa/4dWlmDw0v9C34lf6vq5OQceic4fb4a79VJwq6+oPUhXD6DWFPKDpKUaZOkdmhQeIIOrUTx03x5ExxveywRuXrV0lcly5vL8Zc8t5uLAHbbF9ovmoxFFaCcZlj/+JH774EqsHBqBMZGvYSCUghN1r+UYmBKDERXkdamS5QhotYDXfvHUdQCu3/xycARIVqt8KIZ4rpvDYN2nVy6RzZDMWYJFbzkd8cCcbrDnsT9h7EefRyQCNFqgP92M4Vsvx9znH92V4857zclYs2oF8OQfQRx1VceDvF9FtU41b+YT40qFJYsszXWYBTWmrzq3q7hACikXPbJevAsuCXOpddh6Tj/e9eLn4uDdd0GjqF+Un5ftuweOHx/Hj2/5A757y93IXHlsIqDVUa3yl7ONUPXMS42KplXSrXPx9JFCnVQzikqkzBeEqEbqRNX5Qs4iiQYw942nobVo+65fmwyvw9B3z4KZGMwFlwWIiTB26f9BZ/3jXT/fmDUfc990GrIZW+QTrTls3ax4ASL1uWEeqQTgSulOGESIoJvXdBmYVApYDaZyfpIY6Xy76JpJrcMu82fis284Cofts2fXyy8/swcGcMKhB+PjRx2ClmHYYhinP7p8Oqfdew8oLGwoLY8Ys3niIb2nh4tQxTp1QW9zcGA61aYt4pA4wsBrTsLM3Z7f/TvTBIMXfw68cjlgYl8uMQZm6Ems+8lX4HpUCwe22R1z3/VZpIt2hO1MFump86pcRWGo9AIuUFtUPZ2C/KyOw2OsvsDOuYAJpaNuqUXjTgRzmhE+evRh2GbBgk1a8EP32h3/cshz4ayt1Sq8EXINktZV2V6pHoFgHJlpM4CIDVHRu0/FApdnqysDK9ERtYNNEjQOeSPmHfTanhcavPzrcHdeBWq0uuqc3GgBd16DDdf/qOe/nbHdXlj0vvNgXvh6pPEM2E5avdl6AOWdpQvTVKK85TDNejJ/UKu/B54BwcQXb9TW4bUH7IFdt9rqKS36Kw/YB/ttvRhp5mrgqgQj8/Rx4Mf31voJKxa0RNNmAMRCVQRd7QZvbb4lvCi+Zhb07MOw8Kj39ObD/fYSdK65CCZuKPoYBTWE2BAmLv1PjN5/W8/f0ZyzCIvf+HEsPPVbaL72ZLhGMx+VBqrx50lNGlepfVkkj6MqPyMVqaPmVutGoY+JwktiTivG4fs+9abcyBgcse9uRW2FwmvWW8rrGH/FZg7leq1zPL0xAFM1A69EUcsXz6oUK+KQzVuCBa87FRx3Dy8dvft6jP/os4jF+gYsySdzaeFkayJEyQSGLjoT4w/fM+UNtxZshTkv/me4/rkoBPQ8C6kEjaBF6VENvTaOCWnm1UsrtlOtHVstblfULWW657Dd/NlYPHfOZp29+267FWa3GpUEDNW5gBJWYAN5mdp9lmJW02YADsTkwjKZHhoRaDs6B569BeI53VM2R5ffiNHvn4M47UBMFOa3HJ59eaEmQjy0CoPf/AhG7u6dxdgsxeCVF4I3PAlExhd5asqloqVai4VMSJiM8VrPvbj5QY2dunaaNoT5M/pheLOOXszsa6ERRz1SOj8OSroSRISdRNVwic0dGbURJJDUvCjfvxfE4BUEyY/dgzXfPwetvQ6G6Z8FO7Ie7bt/g+zOqxFlbY/maQ4O9VDLJoAaMRqjazH8rY9jfJ9D0bfPi8Az5gI2g123Eu3fXwWs+AOMoUBtVxcLqEazVINuueQ7wnXz7epuHlowCt0M2l6FsU39uKq03qOugVqPYI+AlepBo2zezfQ0gEqjm7Wroa4giCrXJHA3/RijN/0UMBHIJjAAIo7g2ITFm3pGoTNxKSSUTYTYZZDbLsXYbZcV41UsjLN582nhTUKGbImW1aoiVOv8zTiD6fE6iapZQ04FWoS6To9UswyeHBpBmqWIo6eegq8dGcVYJwki/l5EUd+QgiD/95SwsuTu3LQdARlJJxeFdoEYg/Tq9C1dUdRAHEeIIYiiBhA11ExOxRcsUzanikk9iJlgAjWaiOIGYgZiJnDcgLCpUAkhVdhRZ2U1DVA0FAwIiZ05c84YgVy9xU10f2CdIFKfXYB8jvHDg8N4dN36zfIAdz+2ChNphnIuTF1WLoSpu71AMJ8491Mj05cFzFo4aJkzw4z6bABNvqhyZVGK5hQMuup2XxUFu9hNTmruu8T1NbUJ+ZiaAovv7tfphqorKbtiATNhTAiN07y5G4gwoZs86/FNMHa2HvOohRtPLK64Y/lTXvROmuLKe+4LJqxJzeug0BWSuhxPvZu5oC2zs2umzQAGW0tWOjFrWfXY63o51cbClVl3Oc82IHN0kTcIruv1afeKHqet8jRMIWar2tFFdGFIc+sFiXVtF/U/cP3gksHM2nW9Ui0dBKKma1T3CkSE2ES45I4HcMeKh5/Sov/3zX/A8ifW5WohUMGoDrK7zn4K0Ept9a7TsdKeXDFtBvDCU740mDH/NipSPkKokha00EgYqValymLYhm7T9i/HdTFxyqFTotIycaLmjGmNAumqT/Rq3eYiIGwQIXNyx52PLbofH9i1A5f9nknN/qPemn8hJw1VgaYshDEBE5nFOb/4Fe557LFNWvAr7liOb/3mtlxZvCcppAfTCSHxJhiUwQw4e1/fhpV/mj4cAECbmxdlyFuZhJWbUqzcUgUUASNHPGtX1wrUmVUJO4gHPkpRZKh6OZQOoeb8oSbCWBVO9CSuArcsr9EW/v5xF19sAcCI+x7EBooghO5zGKp1qz6bsPy5yBCeHO3gYz+4HP99060Ym4I5tHZkBP/nquvxucuvK1RMa3S78hm0V+qah1jrAyiPu6zznUvO3zwZ+SnTwLtbz7t0/8nrrlkQuUMns2JyBrTsSq1nsF5jV+QRkhCv142YvpagyrplP4L6PaS4caSUwgIXqRC+fKYco2kII5k89KSZ953yJ7e0w5c8nvBvuDXjIJsmQWoViFJTrzSznJ1cZAuSG8FIavHVq2/Gz26/F8/dcRvssngRCIROlmH546tx64qVWD06gUZkYJh7tIhRyDEAuggmtbo8ODbIJkYfkvGJ8zc3Hd1o7nj7x16z97xs/TUDyBZ0nC89khQ1AdI99uWL9pq/RXk9Rw6n4vSJVhhD0LOvlyFUE6ceWntU5c0MPy7OCmVrpHnsfl+85uf62V6z9DP7jzT7r0bcnONSqzSNUOX+ruaO6wGnE4/c5U0xhNRmyJwELZMCQsScD6jqkXZ2S2CXbKxeu77wonEEZEkbwyOvufrfP37FX8UAAODujx59xFw38p1+svM7xULpnFRqHe66G8UnMaEkek0PKWCai+KgKSn+GqeuLrbYzbNrMCERyjak5oN7fvX683o92+FLP3OUtGZcZKN4jsssjG4R18EsQiURdDvvMCiW8FgMVdH8xpEerr00DJ3qdWkGxhEoTSeyifETr/3UR76Dv+CzSejR7acd8+x5yei5M9geRDZDaqXS+hU9OUukZw6ba/IVsioBg0gBG1WHLLpAjnpPnXieeyCywJBqp41afnCDow/v+6XrfrKxZzt66ReeP9lofIUajeeCGDbLCnk7z4auax16BXSaygx6BHe6rY66Hi3sU3JBsltS3Khsleu078T4yIeu+vQnrsZf+Nlk+PCHX/hg316r737TQNZ5W0TZ/k3mGUwOrFKwXDfHVYhchWYVAWNSNXKG8i56BJwpgkBmQsysxKbzBspqjDq0LC1ghZBmtu1MY3ni3MWrqHXBQV/45Sblxm855ZSBDbOXvDkxzbdmoH2ZeVY5ITyIA8TrBnkOpIOzNhCO1u3xvvmkeGbOeybyxlkHxWv2spfaQFw+ywBwgxB7J3U6P2gMTXz3inOXjWAaPpuBHwvddeordjSmvXvLpvMzS4aJBDYnXDDlM5AdHKwIGWaCc8KN5j59kvwrxMV6YIJPfahi3RgGxhw9Yjn6rEDGrViKyYgDYMVSAwbW5rJv1lEuMmMaQ5lpPXDjTq964MQTT9wswSQB6IilX9qu45LthM1cgFpOxAhRxbZwRIX7c2AiMnH8Tmo0DilnDpSKo3kXL6qzvHLpzECSPpRl7bMdaIJRzqjLZw4RsUBInIiQY2HKOkC6jq08/KtzTnsc0/whPE2fG2+8sW+Hn59+n0nHt87UiDjVpFsFgH0xY7U1n97189d9HH/jn2M+c+4xbWr+LLVZICnbq1jkRBA1GsjGRs779Zkf+te/hfuPnq4Lzb76vEVZ2pnJ6m1ruFenAiKAsW4+/g4+qcMOEjNgKVAqC6eaUw2konl/K/fPT9uFyCwEY6ZDTcCAKOgpKGMJdm7e34MBZNYtqit69ErbpPJ6BBjM+oczgCRyq8jJaDVIoUtaFtVQCgKQEa39ezCAvih6AM5Vga4eW69b2aEGbHDq1vzDGcDg83ZelUXNu5qGu3YHHJQYFZA5QSLRlX8PBiCjE7+WTmcYzFOHVELVPCRJE1A2+fN/OAM49NBlWdv0n5PAZLEpNINLuJc9dWugYbAhcVc+4vou/3swgF+c/eEVDUm/GEURyKgBU0GunyOUUaOBbHLsJ0PrHr3sH84AAGD3cy65fJAHTkwQre6LGa2Y0DKEPsMYKNi6azr4xcq0cfyRmzn/93/jc2A2dA61h8+BlQkTx4jiJoyJwFEEMgam0YARJ25k+DtZZ/07bzv//PRv5d7pf+Oi1//bUdsuloljoiR5FoEGiF2WmeiJ8Y5c9aO5h1495bj3v/HPoad9er+42TrWCT1PiBc7EYbLNjDhTpNlP7ryrH+7Bs98/jE+L1m6NHr3u98dP7MSz3ye+Tzz+dv9/P/PmV7zfsWwnAAAAABJRU5ErkJggg==" alt="메이크앤브레이크 로고"><b>메이크앤브레이크</b><span class="tag">학생용 튜토리얼</span></div>
+ <div class="tr"><span class="count" id="count">1 / 10</span><button class="ghost" id="home">처음으로</button></div>
+</header>
+<main id="main">
+<!-- 0 -->
+<section class="step" data-bg="#fff4c4"><div class="panel split">
+ <div class="txt">
+  <span class="eyebrow">블록 쌓기 스피드 게임</span>
+  <h1>카드를 보고,<br>똑같이 쌓아요!</h1>
+  <p class="lead">메이크앤브레이크는 문제 카드 그림과 똑같은 모양으로 블록을 쌓는 게임이에요. 타이머가 울리기 전에 많이 쌓을수록 점수가 높아요.</p>
+  <div><button class="btn btn-p" data-go="1">시작하기</button></div>
+ </div>
+ <div class="vis" id="v0"></div>
+</div></section>
+<!-- 1 -->
+<section class="step" data-bg="#ffffff"><div class="panel comp">
+ <div class="txt"><span class="eyebrow">1. 구성물</span><h2>게임에 필요한 것</h2></div>
+ <div class="comps">
+  <div class="ct"><div class="box" id="v1a"></div><div><h3>문제 카드</h3><p class="small">문제 카드에는 점수가 적혀 있어요.</p></div></div>
+  <div class="ct"><div class="box" id="v1b"></div><div><h3>주사위와 타이머</h3><p class="small">주사위와 타이머에는 숫자 1, 2, 3이 적혀 있어요.</p></div></div>
+  <div class="ct"><div class="box" id="v1c"></div><div><h3>블록 10개</h3><p class="small">문제 카드와 똑같이 블록을 쌓고 부숴요.</p></div></div>
+ </div>
+</div></section>
+<!-- 2 -->
+<section class="step" data-bg="#ffe6cd"><div class="panel split">
+ <div class="txt">
+  <span class="eyebrow">2. 문제 카드 읽기</span><h2>카드에서 세 가지를 봐요</h2>
+  <div class="call"><span class="num">1</span><p class="lead"><b style="color:var(--ink)">모서리 숫자는 점수</b>예요. 1점, 2점, 3점 카드가 있어요.</p></div>
+  <div class="call"><span class="num">2</span><p class="lead"><b style="color:var(--ink)">그림은 앞에서 본 모양</b>이에요. 눕힌 블록, 세운 블록, 끝면이 보이는 블록을 구별해요.</p></div>
+  <div class="call"><span class="num">3</span><p class="lead"><b style="color:var(--ink)">블록 색도 똑같이</b> 맞춰요.</p></div>
+ </div>
+ <div class="vis" id="v2"></div>
+</div></section>
+<!-- 3 -->
+<section class="step" data-bg="#fde0f0"><div class="panel stack">
+ <div class="txt"><span class="eyebrow">3. 진행 순서</span><h2>내 차례에는 이렇게 해요</h2></div>
+ <div class="flow" id="flow"></div>
+</div></section>
+<!-- 4 -->
+<section class="step" data-bg="#c3faf5"><div class="panel split">
+ <div class="txt">
+  <span class="eyebrow">4. 주사위와 전자 타이머</span><h2>주사위 숫자에 타이머를 맞춰요</h2>
+  <p class="lead">주사위를 굴려 나온 숫자와 같은 숫자로 타이머 다이얼을 돌리고, 버튼을 눌러 시작해요.</p>
+  <p class="lead sub">숫자가 클수록 쌓을 수 있는 시간이 길어요. 타이머가 울리면 내 차례가 끝나요.</p>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn btn-p" id="roll4">주사위 굴리기</button><span class="chip" id="r4">주사위 ? → 타이머 ?</span></div>
+ </div>
+ <div class="vis" id="v4"></div>
+</div></section>
+<!-- 5 -->
+<section class="step" data-bg="#fff4c4"><div class="panel stack">
+ <div class="txt"><span class="eyebrow">5. 꼭 지킬 규칙</span><h2>이것만은 꼭 지켜요</h2></div>
+ <div class="rules" id="rules"></div>
+</div></section>
+<!-- 6 -->
+<section class="step" data-bg="#ffe6cd"><div class="panel split">
+ <div class="txt">
+  <span class="eyebrow">6. 점수와 승리</span><h2>가져간 카드의 숫자를 더해요</h2>
+  <p class="lead">완성해서 가져간 카드의 모서리 숫자를 모두 더하면 내 점수예요.</p>
+  <p class="lead">모두 정해진 횟수만큼 차례를 마치면 <b style="color:var(--ink)">점수가 가장 높은 사람</b>이 이겨요.</p>
+  <p class="small sub">몇 번씩 할지는 게임 전에 선생님, 친구들과 함께 정해요.</p>
+ </div>
+ <div class="vis" id="v6"></div>
+</div></section>
+<!-- 7 quiz -->
+<section class="step" data-bg="#f5f3ff"><div class="panel split" id="quiz">
+ <div class="txt">
+  <span class="eyebrow" id="qn">7. 확인 퀴즈 · 1 / 5</span>
+  <div class="qbar"><i id="qbar" style="width:0%"></i></div>
+  <h2 id="qq"></h2>
+ </div>
+ <div class="txt" style="justify-content:center">
+  <div class="opts" id="qo"></div>
+  <p class="fb" id="qf"></p>
+  <div><button class="btn btn-p" id="qnext" disabled>다음 문제</button></div>
+ </div>
+</div></section>
+<!-- 8 practice -->
+<section class="step" data-bg="#ffffff"><div class="panel prac">
+ <div class="pl">
+  <div class="pcard" id="pcard"></div>
+  <div class="pctrl">
+   <button class="dieb nos" id="pdie"><span id="pdiev"></span><span>주사위<br>굴리기</span></button>
+   <div class="ptimer"><span class="ptime" id="ptime">0:00</span><button class="btn btn-p sm nos" id="pstart" disabled>타이머 시작</button></div>
+  </div>
+  <div class="pmsg" id="pmsg"></div>
+ </div>
+ <div class="pr">
+  <div class="board nos" id="board"></div>
+  <div class="tools nos">
+   <div style="display:contents">
+    <div class="ori" id="ori">
+     <button data-o="H" class="on"><i style="width:18px;height:6px"></i>눕히기</button>
+     <button data-o="V"><i style="width:6px;height:18px"></i>세우기</button>
+     <button data-o="E"><i style="width:7px;height:7px"></i>끝면</button>
+    </div>
+   </div>
+   <div class="tray" id="tray"></div>
+   <div class="pact"><button class="btn btn-s sm" id="pclear">부수기</button><button class="btn btn-p sm" id="pcheck">완성! 확인</button></div>
+  </div>
+ </div>
+</div></section>
+<!-- 9 -->
+<section class="step" data-bg="#fff4c4"><div class="panel split">
+ <div class="txt">
+  <span class="eyebrow">마무리</span><h2>이제 친구들과 게임해요!</h2>
+  <p class="lead" id="sum"></p>
+  <div class="tile"><p class="small" style="color:var(--ink);line-height:1.8">
+   주사위 굴리기 → 같은 숫자로 타이머 맞추기<br>카드 그림을 앞에서 본 모양, 같은 색으로 쌓기<br>완성하면 친구 확인 후 카드 가져가기<br>가져간 카드 숫자를 더해 가장 높은 사람이 승리</p></div>
+ </div>
+ <div class="vis" id="v9"></div>
+</div></section>
+</main>
+<footer class="bot">
+ <button class="btn btn-s" id="prev">이전</button>
+ <div class="dots" id="dots"></div>
+ <button class="btn btn-p" id="next">다음</button>
+</footer>
+</div>
+<script>
+(function(){
+'use strict';
+var COLORS={blue:'#1f5fc4',orange:'#ef7d1a',brown:'#6b3a1f',white:'#f4f1e8',red:'#d9261c',grey:'#bdb6a8',navy:'#232850',yellow:'#f7c51e',green:'#1e9a3c',lime:'#7cc242'};
+var CNAME={blue:'파랑',orange:'주황',brown:'갈색',white:'흰색',red:'빨강',grey:'회색',navy:'남색',yellow:'노랑',green:'초록',lime:'연두'};
+var ORDER=['blue','orange','brown','white','red','grey','navy','yellow','green','lime'];
+var DIMS={H:[3,1],V:[1,3],E:[1,1]};
+var NS='http://www.w3.org/2000/svg';
+
+function shade(hex,p){
+  var n=parseInt(hex.slice(1),16);
+  var r=n>>16,g=(n>>8)&255,b=n&255;
+  var t=p<0?0:255,a=Math.abs(p);
+  r=Math.round(r+(t-r)*a);
+  g=Math.round(g+(t-g)*a);
+  b=Math.round(b+(t-b)*a);
+  return '#'+((1<<24)|(r<<16)|(g<<8)|b).toString(16).slice(1);
+}
+function mk(o,dir){
+  var d=DIMS[o];
+  return {w:d[0],h:d[1]};
+}
+function B(c,o,x,y){
+  var d=DIMS[o];
+  return {c:c,o:o,x:x,y:y,w:d[0],h:d[1]};
+}
+function drawOrder(bs){
+  var rest=bs.slice(),out=[];
+  while(rest.length){
+    var idx=-1;
+    for(var i=0;i<rest.length;i++){
+      var a=rest[i],blocked=false;
+      for(var j=0;j<rest.length;j++){
+        if(i===j){continue;}
+        var b=rest[j];
+        var leftOf=(b.x+b.w<=a.x)&&(b.y<a.y+a.h+1)&&(a.y<b.y+b.h+1);
+        var below=(b.y+b.h<=a.y)&&(b.x<a.x+a.w+1)&&(a.x<b.x+b.w+1);
+        if(leftOf||below){blocked=true;break;}
+      }
+      if(!blocked){idx=i;break;}
+    }
+    if(idx<0){idx=0;}
+    out.push(rest.splice(idx,1)[0]);
+  }
+  return out;
+}
+function blockSVG(b,u,ox,oy,opt){
+  opt=opt||{};
+  var dep=(opt.depth||0.28)*u;
+  var X=ox+b.x*u,W=b.w*u,H=b.h*u,Y=oy-(b.y+b.h)*u;
+  var c=COLORS[b.c];
+  var sw=Math.max(0.8,u*0.045);
+  var st='stroke="rgba(20,20,30,.45)" stroke-width="'+sw.toFixed(2)+'" stroke-linejoin="round"';
+  var attr=opt.attr||'';
+  var s='<g '+attr+'>';
+  s+='<polygon points="'+X+','+Y+' '+(X+dep)+','+(Y-dep)+' '+(X+W+dep)+','+(Y-dep)+' '+(X+W)+','+Y+'" fill="'+shade(c,0.38)+'" '+st+'/>';
+  s+='<polygon points="'+(X+W)+','+Y+' '+(X+W+dep)+','+(Y-dep)+' '+(X+W+dep)+','+(Y+H-dep)+' '+(X+W)+','+(Y+H)+'" fill="'+shade(c,-0.28)+'" '+st+'/>';
+  s+='<rect x="'+X+'" y="'+Y+'" width="'+W+'" height="'+H+'" fill="'+c+'" '+st+'/>';
+  s+='</g>';
+  return s;
+}
+function bounds(bs){
+  var w=0,h=0;
+  bs.forEach(function(b){w=Math.max(w,b.x+b.w);h=Math.max(h,b.y+b.h);});
+  return {w:w,h:h};
+}
+/* 문제 카드 */
+function cardInner(card,W,H){
+  var col=card.pts===2?'#1d4fa8':'#d52a1a';
+  var s='<rect x="0" y="0" width="'+W+'" height="'+H+'" rx="'+(H*0.09)+'" fill="#ee8a1d"/>';
+  s+='<rect x="'+(H*0.05)+'" y="'+(H*0.05)+'" width="'+(W-H*0.1)+'" height="'+(H-H*0.1)+'" rx="'+(H*0.06)+'" fill="#f9e97a" stroke="#fdf3b8" stroke-width="'+(H*0.02)+'"/>';
+  s+='<text x="'+(H*0.13)+'" y="'+(H*0.2)+'" font-size="'+(H*0.11)+'" font-weight="800" fill="'+col+'" font-family="Arial, sans-serif">'+card.pts+'</text>';
+  s+='<text x="'+(W-H*0.13)+'" y="'+(H*0.2)+'" text-anchor="end" font-size="'+(H*0.11)+'" font-weight="800" fill="'+col+'" font-family="Arial, sans-serif">'+card.pts+'</text>';
+  var bd=bounds(card.blocks);
+  var iw=W-H*0.5,ih=H*0.66;
+  var u=Math.min(iw/(bd.w+0.3),ih/(bd.h+0.3),H*0.16);
+  var ox=(W-bd.w*u)/2-u*0.14;
+  var oy=H*0.88;
+  drawOrder(card.blocks).forEach(function(b){s+=blockSVG(b,u,ox,oy);});
+  return s;
+}
+function cardSVG(card,W,H){
+  W=W||380;H=H||210;
+  return '<svg xmlns="'+NS+'" viewBox="-2 -2 '+(W+4)+' '+(H+4)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+card.pts+'점 문제 카드">'+cardInner(card,W,H)+'</svg>';
+}
+/* 카드 데이터 (연습용) */
+var CARDS=[
+  {pts:1,blocks:[B('yellow','V',0,0),B('orange','V',2,0),B('green','H',0,3)]},
+  {pts:2,blocks:[B('red','H',0,0),B('blue','E',0,1),B('navy','E',2,1),B('white','H',0,2),B('lime','V',1,3)]},
+  {pts:3,blocks:[B('brown','H',0,0),B('orange','H',3,0),B('navy','E',0,1),B('grey','V',2,1),B('red','V',3,1),B('blue','H',1,4)]}
+];
+/* 주사위 */
+function dieSVG(v,size){
+  var s='<svg xmlns="'+NS+'" viewBox="0 0 120 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="주사위 '+v+'">';
+  s+='<polygon points="14,34 38,12 108,12 84,34" fill="#f6e6c8" stroke="#b89a6a" stroke-width="2" stroke-linejoin="round"/>';
+  s+='<polygon points="84,34 108,12 108,84 84,106" fill="#d8bd8e" stroke="#b89a6a" stroke-width="2" stroke-linejoin="round"/>';
+  s+='<rect x="14" y="34" width="70" height="72" rx="8" fill="#efd8b0" stroke="#b89a6a" stroke-width="2"/>';
+  s+='<text x="49" y="86" text-anchor="middle" font-size="48" font-weight="800" fill="#1c1c1e" font-family="Arial, sans-serif">'+v+'</text>';
+  var o=(typeof v==='number')?(v===3?1:v+1):'';
+  s+='<text x="98" y="66" text-anchor="middle" font-size="26" font-weight="800" fill="#1c1c1e" font-family="Arial, sans-serif" transform="skewY(-40 98 66)">'+o+'</text>';
+  s+='</svg>';
+  return s;
+}
+/* 전자 타이머 */
+function timerSVG(v,idp){
+  var ang={0:-50,1:-50,2:0,3:50}[v||0];
+  var cx=150,cy=158;
+  var s='<svg xmlns="'+NS+'" viewBox="0 0 300 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="전자 타이머">';
+  s+='<ellipse cx="150" cy="138" rx="142" ry="108" fill="#15309a"/>';
+  s+='<ellipse cx="150" cy="130" rx="138" ry="104" fill="#2450d6"/>';
+  s+='<ellipse cx="150" cy="134" rx="116" ry="86" fill="#e2401c"/>';
+  s+='<ellipse cx="150" cy="140" rx="100" ry="70" fill="#f05a1e"/>';
+  s+='<circle cx="122" cy="62" r="17" fill="#0f7a28"/><circle cx="122" cy="59" r="15" fill="#26b04a"/>';
+  s+='<circle cx="180" cy="68" r="17" fill="#8e1218"/><circle cx="180" cy="65" r="15" fill="#e0262e"/>';
+  for(var a=-80;a<=80;a+=10){
+    var rad=(a-90)*Math.PI/180;
+    var r1=48,r2=a%40===0?60:55;
+    s+='<line x1="'+(cx+r1*Math.cos(rad)).toFixed(1)+'" y1="'+(cy+r1*Math.sin(rad)*0.9).toFixed(1)+'" x2="'+(cx+r2*Math.cos(rad)).toFixed(1)+'" y2="'+(cy+r2*Math.sin(rad)*0.9).toFixed(1)+'" stroke="#ffd23a" stroke-width="3" stroke-linecap="round"/>';
+  }
+  [[1,-50],[2,0],[3,50]].forEach(function(p){
+    var rad=(p[1]-90)*Math.PI/180;
+    var on=v===p[0];
+    s+='<text x="'+(cx+76*Math.cos(rad)).toFixed(1)+'" y="'+(cy+76*Math.sin(rad)*0.9+9).toFixed(1)+'" text-anchor="middle" font-size="'+(on?30:24)+'" font-weight="800" fill="'+(on?'#ffffff':'#ffd23a')+'" stroke="#8a2a08" stroke-width="1" font-family="Arial, sans-serif">'+p[0]+'</text>';
+  });
+  s+='<circle cx="'+cx+'" cy="'+(cy+3)+'" r="36" fill="#12308a"/>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="34" fill="#2552d8"/>';
+  s+='<g '+(idp?'id="'+idp+'" ':'')+'style="transition:transform .5s;transform-origin:'+cx+'px '+cy+'px;transform:rotate('+ang+'deg)">';
+  s+='<rect x="'+(cx-7)+'" y="'+(cy-40)+'" width="14" height="80" rx="7" fill="#1a3fb8" stroke="#0f2a80" stroke-width="2"/>';
+  s+='<polygon points="'+cx+','+(cy-46)+' '+(cx-6)+','+(cy-36)+' '+(cx+6)+','+(cy-36)+'" fill="#ffd23a"/>';
+  s+='</g>';
+  s+='</svg>';
+  return s;
+}
+/* 블록 10개 */
+function blocksSetSVG(){
+  var u=26,s='<svg xmlns="'+NS+'" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" role="img" aria-label="블록 10개">';
+  var back=['blue','orange','brown','white','red'],front=['grey','navy','yellow','green','lime'];
+  back.forEach(function(c,i){s+=blockSVG({c:c,x:i*1.55,y:0,w:1,h:2.6},u,58,120,{depth:0.55});});
+  front.forEach(function(c,i){s+=blockSVG({c:c,x:i*1.55,y:0,w:1,h:2.6},u,30,188,{depth:0.55});});
+  s+='</svg>';
+  return s;
+}
+function stackCardsSVG(){
+  var W=380,H=210,s='<svg xmlns="'+NS+'" viewBox="-4 -4 '+(W+8)+' '+(H*3+28)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="1점, 2점, 3점 문제 카드">';
+  CARDS.forEach(function(c,i){s+='<g transform="translate(0,'+(i*(H+10))+')">'+cardInner(c,W,H)+'</g>';});
+  return s+'</svg>';
+}
+function $(id){return document.getElementById(id);}
+function arrowSVG(){return '';}
+
+/* ---------- 정적 화면 채우기 ---------- */
+// 0 시작
+(function(){
+  var c=CARDS[1];
+  var s='<svg xmlns="'+NS+'" viewBox="0 0 640 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="카드 그림을 보고 블록을 똑같이 쌓는 모습">';
+  s+='<g transform="translate(0,70)">'+cardInner(c,280,160)+'</g>';
+  s+='<path d="M300 150 H352" stroke="#1c1c1e" stroke-width="4" stroke-linecap="round"/><path d="M342 138 L356 150 L342 162" fill="none" stroke="#1c1c1e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+='<rect x="372" y="300" width="262" height="8" rx="4" fill="#c7cad5"/>';
+  drawOrder(c.blocks).forEach(function(b){s+=blockSVG(b,50,420,300);});
+  s+='</svg>';
+  $('v0').innerHTML=s;
+})();
+$('v1a').innerHTML=stackCardsSVG();
+$('v1b').innerHTML='<svg xmlns="'+NS+'" viewBox="0 0 440 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="전자 타이머와 주사위">'+timerSVG(0).replace('<svg ','<svg x="0" y="0" width="300" height="250" ')+dieSVG(3).replace('<svg ','<svg x="310" y="110" width="120" height="120" ')+'</svg>';
+$('v1c').innerHTML=blocksSetSVG();
+// 2 카드 읽기
+(function(){
+  var W=380,H=210,c=CARDS[2];
+  var s='<svg xmlns="'+NS+'" viewBox="-20 -24 '+(W+40)+' '+(H+48)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="3점 카드 설명">'+cardInner(c,W,H);
+  function badge(x,y,n){return '<circle cx="'+x+'" cy="'+y+'" r="14" fill="#1c1c1e" stroke="#fff" stroke-width="3"/><text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="15" font-weight="700" fill="#fff" font-family="Arial, sans-serif">'+n+'</text>';}
+  s+='<circle cx="33" cy="36" r="20" fill="none" stroke="#1c1c1e" stroke-width="3" stroke-dasharray="5 4"/>'+badge(4,8,1);
+  s+='<circle cx="'+(W-33)+'" cy="36" r="20" fill="none" stroke="#1c1c1e" stroke-width="3" stroke-dasharray="5 4"/>';
+  s+=badge(W/2-95,H*0.45,2)+badge(W/2+92,H*0.30,3);
+  s+='</svg>';
+  $('v2').innerHTML=s;
+})();
+// 3 진행 순서
+(function(){
+  var ic1=dieSVG(2);
+  var ic2=timerSVG(2);
+  var ic3=cardSVG(CARDS[0]);
+  var ic4='<svg xmlns="'+NS+'" viewBox="0 0 120 100" role="img" aria-label="확인 표시"><circle cx="60" cy="50" r="40" fill="#00b473"/><path d="M40 51 L54 65 L82 36" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ic5='<svg xmlns="'+NS+'" viewBox="0 0 120 100" role="img" aria-label="타이머 종료"><circle cx="60" cy="54" r="36" fill="#fff" stroke="#1c1c1e" stroke-width="6"/><path d="M60 54 V32 M60 54 L76 62" stroke="#1c1c1e" stroke-width="6" stroke-linecap="round"/><path d="M22 20 L36 10 M98 20 L84 10" stroke="#d9261c" stroke-width="6" stroke-linecap="round"/></svg>';
+  var items=[
+    ['주사위 굴리기','주사위를 한 번 굴려요.',ic1],
+    ['타이머 맞추기','주사위와 같은 숫자로 다이얼을 돌리고 시작 버튼을 눌러요.',ic2],
+    ['카드 보고 쌓기','카드 한 장을 뒤집고 그림과 똑같이 쌓아요.',ic3],
+    ['확인받고 가져가기','친구가 맞다고 하면 카드를 가져가요. 블록을 부수고 다음 카드를 뒤집어요.',ic4],
+    ['타이머가 울리면 끝','내 차례가 끝나고, 다음 친구 차례예요.',ic5]
+  ];
+  var h='';
+  items.forEach(function(it,i){
+    h+='<div class="fs tile"><span class="num">'+(i+1)+'</span><div class="ic">'+it[2]+'</div><div><h3>'+it[0]+'</h3><p class="small d">'+it[1]+'</p></div></div>';
+  });
+  $('flow').innerHTML=h;
+})();
+// 5 규칙
+(function(){
+  function mini(bs,label,bad){
+    var bd=bounds(bs),u=22;
+    var W=bd.w*u+14,H=bd.h*u+14;
+    var s='<svg xmlns="'+NS+'" viewBox="-4 -8 '+(W+8)+' '+(H+8)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+label+'">';
+    drawOrder(bs).forEach(function(b){s+=blockSVG(b,u,2,H-2);});
+    return s+'</svg>';
+  }
+  var r1='<svg xmlns="'+NS+'" viewBox="0 0 160 100" role="img" aria-label="앞에서 보기"><circle cx="30" cy="50" r="18" fill="#fff" stroke="#1c1c1e" stroke-width="4"/><circle cx="36" cy="50" r="6" fill="#1c1c1e"/><path d="M56 50 H82" stroke="#1c1c1e" stroke-width="4" stroke-dasharray="6 5"/>'+
+    blockSVG({c:'yellow',x:0,y:0,w:1,h:3},20,96,90)+blockSVG({c:'green',x:0,y:3,w:3,h:1},20,96,90)+blockSVG({c:'orange',x:2,y:0,w:1,h:3},20,96,90)+'</svg>';
+  var r2=mini([B('red','H',0,0),B('blue','E',0,1),B('navy','E',2,1),B('white','H',0,2)],'같은 색 블록');
+  var r3='<svg xmlns="'+NS+'" viewBox="0 0 160 100" role="img" aria-label="무너지면 다시 쌓기">'+blockSVG({c:'grey',x:0,y:0,w:3,h:1},20,10,92)+'<g transform="rotate(-28 60 50)">'+blockSVG({c:'lime',x:0,y:0,w:1,h:3},20,50,82)+'</g><path d="M120 34 a22 22 0 1 1 -8 -16" fill="none" stroke="#1c1c1e" stroke-width="5" stroke-linecap="round"/><path d="M106 10 L114 20 L102 24" fill="none" stroke="#1c1c1e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var r4='<svg xmlns="'+NS+'" viewBox="0 0 160 100" role="img" aria-label="친구 확인 후 카드 가져가기"><g transform="translate(6,14) scale(0.3)">'+cardInner(CARDS[0],380,210)+'</g><circle cx="138" cy="50" r="18" fill="#00b473"/><path d="M129 50 L136 57 L148 44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var items=[
+    ['앞에서 본 모양 그대로','카드는 앞에서 본 모습이에요. 눕힘, 세움, 끝면을 정확히 맞춰요.',r1],
+    ['색칠된 블록은 같은 색으로','카드에 칠해진 색과 같은 색 블록을 써요.',r2],
+    ['무너지면 다시 쌓기','쌓다가 무너지면 시간이 남아 있는 동안 다시 쌓아요.',r3],
+    ['친구가 확인해요','완성하면 “완성!”이라고 말하고, 친구가 맞다고 하면 카드를 가져가요.',r4]
+  ];
+  var h='';
+  items.forEach(function(it,i){
+    h+='<div class="rule tile"><span class="num">'+(i+1)+'</span><div><h3>'+it[0]+'</h3><p class="small d">'+it[1]+'</p></div><div class="ic">'+it[2]+'</div></div>';
+  });
+  $('rules').innerHTML=h;
+})();
+// 6 점수
+(function(){
+  var s='<svg xmlns="'+NS+'" viewBox="0 0 640 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="1점 더하기 2점 더하기 3점은 6점">';
+  CARDS.forEach(function(c,i){
+    s+='<g transform="translate('+(i*168)+',60) scale(0.36)">'+cardInner(c,380,210)+'</g>';
+    if(i<2){s+='<text x="'+(i*168+151)+'" y="112" text-anchor="middle" font-size="30" font-weight="700" fill="#1c1c1e" font-family="Arial, sans-serif">+</text>';}
+  });
+  s+='<text x="505" y="112" font-size="30" font-weight="700" fill="#1c1c1e" font-family="Arial, sans-serif">=</text>';
+  s+='<rect x="532" y="72" width="100" height="56" rx="8" fill="#ffd02f"/><text x="582" y="111" text-anchor="middle" font-size="30" font-weight="700" fill="#1c1c1e" font-family="Pretendard, Arial, sans-serif">6점</text>';
+  s+='<text x="0" y="190" font-size="18" fill="#555a6a" font-family="Pretendard, Arial, sans-serif">1점 + 2점 + 3점 카드를 가져가면 모두 6점이에요.</text>';
+  s+='</svg>';
+  $('v6').innerHTML=s;
+})();
+$('v9').innerHTML=$('v0').innerHTML;
+
+/* ---------- 4. 주사위 체험 ---------- */
+$('v4').innerHTML='<svg xmlns="'+NS+'" viewBox="0 0 460 260" preserveAspectRatio="xMidYMid meet"><g id="t4">'+timerSVG(0,'k4').replace('<svg ','<svg x="0" y="0" width="300" height="250" ')+'</g><g id="d4">'+dieSVG('?').replace('<svg ','<svg x="320" y="120" width="130" height="130" ')+'</g></svg>';
+$('roll4').addEventListener('click',function(){
+  var v=1+Math.floor(Math.random()*3);
+  $('d4').innerHTML=dieSVG(v).replace('<svg ','<svg x="320" y="120" width="130" height="130" ');
+  $('t4').innerHTML=timerSVG(v,'k4').replace('<svg ','<svg x="0" y="0" width="300" height="250" ');
+  $('r4').textContent='주사위 '+v+' → 타이머 '+v;
+});
+
+/* ---------- 7. 퀴즈 ---------- */
+var QUIZ=[
+  {q:'문제 카드의 그림은 어느 쪽에서 본 모양일까요?',o:['앞에서 본 모양','위에서 본 모양','옆에서 본 모양'],a:0,e:'카드 그림은 앞에서 본 모양이에요. 블록을 앞에서 봤을 때 카드와 똑같아야 해요.'},
+  {q:'주사위를 굴렸더니 3이 나왔어요. 타이머는 어떻게 할까요?',o:['아무 숫자나 맞춰요','타이머를 3에 맞춰요','타이머를 1에 맞춰요'],a:1,e:'주사위 숫자와 같은 숫자로 타이머를 맞춰요. 3은 가장 긴 시간이에요.'},
+  {q:'카드 모서리에 적힌 숫자는 무엇일까요?',o:['필요한 블록 수','카드의 순서','카드의 점수'],a:2,e:'모서리 숫자는 점수예요. 어려운 카드일수록 점수가 높아요.'},
+  {q:'카드에 빨간 블록이 그려져 있어요. 어떻게 쌓을까요?',o:['빨간 블록으로 쌓아요','아무 색이나 괜찮아요','비슷한 주황 블록도 돼요'],a:0,e:'색칠된 블록은 같은 색 블록으로 쌓아야 해요.'},
+  {q:'타이머가 울렸는데 아직 다 못 쌓았어요. 어떻게 될까요?',o:['반만 점수를 받아요','그 카드는 점수를 받지 못해요','다음 차례에 이어서 쌓아요'],a:1,e:'타이머가 울리기 전에 완성한 카드만 가져갈 수 있어요.'}
+];
+var qi=0,qScore=0,qDone=false;
+function renderQ(){
+  var n=QUIZ.length;
+  if(qi>=n){
+    qDone=true;
+    $('qn').textContent='7. 확인 퀴즈 · 결과';
+    $('qbar').style.width='100%';
+    $('qq').textContent=n+'문제 중 '+qScore+'문제를 맞혔어요!';
+    $('qo').innerHTML='<p class="lead">'+(qScore===n?'모든 규칙을 잘 알고 있어요. 이제 블록 연습을 해 봐요.':'틀린 문제는 앞 화면에서 다시 확인하고 한 번 더 풀어 봐요.')+'</p>';
+    $('qf').textContent='';
+    $('qnext').textContent='다시 풀기';
+    $('qnext').disabled=false;
+    return;
+  }
+  var q=QUIZ[qi];
+  $('qn').textContent='7. 확인 퀴즈 · '+(qi+1)+' / '+n;
+  $('qbar').style.width=(qi/n*100)+'%';
+  $('qq').textContent=q.q;
+  $('qf').textContent='';
+  $('qnext').textContent=qi===n-1?'결과 보기':'다음 문제';
+  $('qnext').disabled=true;
+  var h='';
+  q.o.forEach(function(t,i){h+='<button class="opt" data-i="'+i+'"><span class="num" style="background:#fff;color:#1c1c1e;border:1px solid #c7cad5">'+'ABC'[i]+'</span>'+t+'</button>';});
+  $('qo').innerHTML=h;
+}
+$('qo').addEventListener('click',function(e){
+  var bt=e.target.closest('.opt');
+  if(!bt||bt.disabled){return;}
+  var q=QUIZ[qi],i=+bt.getAttribute('data-i');
+  var all=$('qo').querySelectorAll('.opt');
+  all.forEach(function(x){x.disabled=true;});
+  all[q.a].classList.add('ok');
+  if(i===q.a){qScore++;$('qf').innerHTML='<b style="color:#00875a">정답!</b> '+q.e;}
+  else{bt.classList.add('no');$('qf').innerHTML='<b style="color:#c62828">아쉬워요.</b> '+q.e;}
+  $('qnext').disabled=false;
+  $('qnext').focus();
+});
+$('qnext').addEventListener('click',function(){
+  if(qDone){qi=0;qScore=0;qDone=false;renderQ();return;}
+  qi++;renderQ();
+});
+renderQ();
+
+/* ---------- 8. 블록 연습 ---------- */
+var GW=12,GH=9,U=40,OX=14,OY=GH*U+30;
+var VBW=GW*U+OX+30,VBH=OY+14;
+var P={card:0,placed:[],sel:'blue',ori:'H',die:0,time:0,running:false,over:false,score:0,done:false,iv:null,hover:null};
+var TIMES={1:60,2:80,3:100};
+function colTop(c,list){
+  var t=0;
+  list.forEach(function(b){if(c>=b.x&&c<b.x+b.w){t=Math.max(t,b.y+b.h);}});
+  return t;
+}
+function landing(gx,w,list){
+  var y=0;
+  for(var c=gx;c<gx+w;c++){y=Math.max(y,colTop(c,list));}
+  return y;
+}
+function settle(list){
+  var sorted=list.slice().sort(function(a,b){return a.y-b.y;});
+  var out=[];
+  sorted.forEach(function(b){
+    var nb={c:b.c,o:b.o,x:b.x,w:b.w,h:b.h,y:landing(b.x,b.w,out)};
+    out.push(nb);
+  });
+  return out;
+}
+function norm(list,withColor){
+  if(!list.length){return '';}
+  var mx=Math.min.apply(null,list.map(function(b){return b.x;}));
+  return list.map(function(b){return (withColor?b.c+':':'')+(b.x-mx)+','+b.y+','+b.w+','+b.h;}).sort().join('|');
+}
+function fmt(t){var m=Math.floor(t/60),s=t%60;return m+':'+(s<10?'0':'')+s;}
+function msg(t,cls){var m=$('pmsg');m.innerHTML=t;m.className='pmsg'+(cls?' '+cls:'');}
+function beep(){
+  try{
+    var A=window.AudioContext||window.webkitAudioContext;
+    var ac=new A();
+    [0,0.35,0.7].forEach(function(d){
+      var o=ac.createOscillator(),g=ac.createGain();
+      o.frequency.value=880;o.connect(g);g.connect(ac.destination);
+      g.gain.setValueAtTime(0.2,ac.currentTime+d);
+      g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+d+0.3);
+      o.start(ac.currentTime+d);o.stop(ac.currentTime+d+0.3);
+    });
+  }catch(e){}
+}
+function renderCard(){
+  if(P.done){$('pcard').innerHTML=stackCardsSVG();return;}
+  $('pcard').innerHTML=cardSVG(CARDS[P.card]);
+}
+function renderStat(){
+  $('ptime').textContent=fmt(P.time);
+  $('ptime').className='ptime'+(P.running&&P.time<=10?' warn':'');
+}
+function renderTray(){
+  var used={};P.placed.forEach(function(b){used[b.c]=1;});
+  var d=DIMS[P.ori],h='';
+  ORDER.forEach(function(c){
+    var w=d[0]*7,hh=d[1]*7;
+    h+='<button class="sw'+(P.sel===c&&!used[c]?' on':'')+'" data-c="'+c+'" '+(used[c]?'disabled':'')+' aria-label="'+CNAME[c]+' 블록" title="'+CNAME[c]+'"><span style="width:'+w+'px;height:'+hh+'px;background:'+COLORS[c]+'"></span></button>';
+  });
+  $('tray').innerHTML=h;
+}
+function nextFree(){
+  var used={};P.placed.forEach(function(b){used[b.c]=1;});
+  if(P.sel&&!used[P.sel]){return P.sel;}
+  for(var i=0;i<ORDER.length;i++){if(!used[ORDER[i]]){return ORDER[i];}}
+  return null;
+}
+function renderBoard(){
+  var s='<svg xmlns="'+NS+'" viewBox="0 0 '+VBW+' '+VBH+'" preserveAspectRatio="xMidYMid meet" id="bsvg" role="img" aria-label="블록 쌓기 판">';
+  for(var i=0;i<=GW;i++){s+='<line x1="'+(OX+i*U)+'" y1="'+(OY-GH*U)+'" x2="'+(OX+i*U)+'" y2="'+OY+'" stroke="#e0e2e8" stroke-width="1"/>';}
+  for(var j=0;j<=GH;j++){s+='<line x1="'+OX+'" y1="'+(OY-j*U)+'" x2="'+(OX+GW*U)+'" y2="'+(OY-j*U)+'" stroke="#e0e2e8" stroke-width="1"/>';}
+  s+='<rect x="'+(OX-6)+'" y="'+OY+'" width="'+(GW*U+24)+'" height="8" rx="3" fill="#8e91a0"/>';
+  drawOrder(P.placed).forEach(function(b){
+    s+=blockSVG(b,U,OX,OY,{attr:'data-k="'+b.c+'"'});
+  });
+  if(P.hover){s+=blockSVG(P.hover,U,OX,OY,{attr:'opacity="0.4" pointer-events="none"'});}
+  if(!P.running&&!P.done){s+='<rect x="'+OX+'" y="'+(OY-GH*U)+'" width="'+(GW*U)+'" height="'+(GH*U)+'" fill="rgba(255,255,255,.55)"/>';}
+  s+='</svg>';
+  $('board').innerHTML=s;
+}
+function renderAll(){renderCard();renderStat();renderTray();renderBoard();}
+function svgPt(e){
+  var sv=$('bsvg');
+  var pt=sv.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
+  return pt.matrixTransform(sv.getScreenCTM().inverse());
+}
+function candidate(e){
+  var c=nextFree();
+  if(!c){return null;}
+  var p=svgPt(e),d=DIMS[P.ori];
+  var gx=Math.floor((p.x-OX)/U-(d[0]-1)/2+0.001);
+  gx=Math.max(0,Math.min(GW-d[0],gx));
+  var y=landing(gx,d[0],P.placed);
+  if(y+d[1]>GH){return null;}
+  return {c:c,o:P.ori,x:gx,y:y,w:d[0],h:d[1]};
+}
+$('board').addEventListener('click',function(e){
+  if(!P.running){
+    msg(P.done?'연습을 모두 마쳤어요! 다음 화면으로 넘어가요.':'먼저 <b>주사위를 굴리고 타이머를 시작</b>하세요.',P.done?'ok':'');
+    return;
+  }
+  var g=e.target.closest('[data-k]');
+  if(g){
+    var k=g.getAttribute('data-k');
+    P.placed=settle(P.placed.filter(function(b){return b.c!==k;}));
+    P.sel=k;P.hover=null;
+    renderTray();renderBoard();
+    return;
+  }
+  var cand=candidate(e);
+  if(!cand){msg(nextFree()?'여기에는 더 높이 쌓을 수 없어요.':'블록 10개를 모두 썼어요. 블록을 눌러 빼 보세요.','no');return;}
+  P.placed.push(cand);
+  P.sel=nextFree();P.hover=null;
+  renderTray();renderBoard();
+});
+$('board').addEventListener('pointermove',function(e){
+  if(e.pointerType!=='mouse'||!P.running){return;}
+  if(e.target.closest('[data-k]')){if(P.hover){P.hover=null;renderBoard();}return;}
+  var c=candidate(e);
+  var key=c?c.x+','+c.y+c.o:'';
+  var old=P.hover?P.hover.x+','+P.hover.y+P.hover.o:'';
+  if(key!==old){P.hover=c;renderBoard();}
+});
+$('board').addEventListener('pointerleave',function(){if(P.hover){P.hover=null;renderBoard();}});
+$('tray').addEventListener('click',function(e){
+  var b=e.target.closest('.sw');
+  if(!b||b.disabled){return;}
+  P.sel=b.getAttribute('data-c');renderTray();
+});
+$('ori').addEventListener('click',function(e){
+  var b=e.target.closest('button');
+  if(!b){return;}
+  P.ori=b.getAttribute('data-o');
+  $('ori').querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+  renderTray();
+});
+$('pdie').addEventListener('click',function(){
+  if(P.running){msg('타이머가 이미 돌아가고 있어요. 쌓기에 집중해요!');return;}
+  if(P.done||P.over){resetPractice();}
+  P.die=1+Math.floor(Math.random()*3);
+  P.time=TIMES[P.die];
+  $('pdiev').innerHTML=dieSVG(P.die);
+  $('pstart').disabled=false;
+  $('pstart').textContent='타이머 '+P.die+' 시작';
+  renderStat();
+  msg('주사위 <b>'+P.die+'</b>! 타이머를 <b>'+P.die+'</b>에 맞췄어요. (연습용 '+TIMES[P.die]+'초) 시작을 눌러요.');
+});
+$('pstart').addEventListener('click',function(){
+  if(P.running||!P.die){return;}
+  P.running=true;$('pstart').disabled=true;$('pstart').textContent='진행 중';
+  msg('카드와 똑같이 쌓아요. 블록 모양을 고르고 판을 누르면 놓여요. 놓인 블록을 누르면 빠져요.');
+  renderBoard();
+  P.iv=setInterval(function(){
+    P.time--;renderStat();
+    if(P.time<=0){
+      stopTimer();P.over=true;beep();
+      msg('<b>띠리리! 시간 끝.</b> 완성한 카드 점수는 <b>'+P.score+'점</b>이에요. 주사위를 다시 굴려 새로 도전해요.','no');
+      $('pstart').textContent='타이머 시작';
+      renderBoard();
+    }
+  },1000);
+});
+function stopTimer(){P.running=false;if(P.iv){clearInterval(P.iv);P.iv=null;}}
+$('pclear').addEventListener('click',function(){
+  P.placed=[];P.sel='blue';P.hover=null;renderTray();renderBoard();
+});
+$('pcheck').addEventListener('click',function(){
+  if(!P.running){msg('타이머가 돌아갈 때 확인할 수 있어요.');return;}
+  var t=CARDS[P.card].blocks;
+  if(norm(P.placed,true)===norm(t,true)){
+    P.score+=CARDS[P.card].pts;
+    if(P.card===CARDS.length-1){
+      stopTimer();P.done=true;
+      msg('<b>모두 완성!</b> 카드 3장을 가져가서 <b>'+P.score+'점</b>이에요. 시간은 '+fmt(P.time)+' 남았어요.','ok');
+      $('pstart').textContent='완료';
+      P.placed=[];renderAll();
+      return;
+    }
+    msg('<b>정답! '+CARDS[P.card].pts+'점 카드</b>를 가져가요. 블록을 부수고 다음 카드를 쌓아요.','ok');
+    P.card++;P.placed=[];P.sel='blue';
+    renderAll();
+    return;
+  }
+  var n=P.placed.length,m=t.length;
+  if(n!==m){msg('블록 개수가 달라요. 카드에는 <b>'+m+'개</b>, 지금은 <b>'+n+'개</b>예요.','no');}
+  else if(norm(P.placed,false)===norm(t,false)){msg('모양은 맞아요! <b>블록 색</b>을 카드와 똑같이 바꿔 보세요.','no');}
+  else{msg('카드와 모양이 달라요. 눕힘, 세움, 끝면과 위치를 다시 봐요.','no');}
+});
+function resetPractice(){
+  stopTimer();
+  P.card=0;P.placed=[];P.sel='blue';P.die=0;P.time=0;P.over=false;P.done=false;P.score=0;P.hover=null;
+  $('pdiev').innerHTML=dieSVG('?');
+  $('pstart').disabled=true;$('pstart').textContent='타이머 시작';
+  msg('<b>연습:</b> 카드 3장을 시간 안에 쌓아 봐요. 먼저 <b>주사위를 굴려요</b>.');
+  renderAll();
+}
+resetPractice();
+
+/* ---------- 이동 ---------- */
+var steps=[].slice.call(document.querySelectorAll('.step'));
+var cur=0,N=steps.length;
+var dh='';
+for(var i=0;i<N;i++){dh+='<button class="dot" data-i="'+i+'" aria-label="'+(i+1)+'단계로 이동"></button>';}
+$('dots').innerHTML=dh;
+function go(n){
+  n=Math.max(0,Math.min(N-1,n));
+  if(cur===8&&n!==8&&P.running){
+    stopTimer();$('pstart').textContent='타이머 시작';P.over=true;
+    msg('화면을 넘겨서 타이머가 멈췄어요. 주사위를 다시 굴려 새로 도전해요.');renderBoard();
+  }
+  cur=n;
+  steps.forEach(function(s,i){
+    s.classList.toggle('on',i===n);
+    if(i===n){s.querySelector('.panel').style.background=s.getAttribute('data-bg');}
+  });
+  document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('on',i===n);});
+  $('count').textContent=(n+1)+' / '+N;
+  $('prev').disabled=n===0;
+  $('next').textContent=n===N-1?'처음부터 다시':(n===0?'시작하기':'다음');
+  if(n===N-1){
+    var ps=P.done?('블록 연습에서 '+P.score+'점을 모았어요.'):'블록 연습도 꼭 해 보세요.';
+    $('sum').textContent=(qDone?'퀴즈 '+QUIZ.length+'문제 중 '+qScore+'문제를 맞혔어요. ':'')+ps;
+  }
+}
+$('next').addEventListener('click',function(){
+  if(cur===N-1){qi=0;qScore=0;qDone=false;renderQ();resetPractice();go(0);}
+  else{go(cur+1);}
+});
+$('prev').addEventListener('click',function(){go(cur-1);});
+$('home').addEventListener('click',function(){go(0);});
+$('dots').addEventListener('click',function(e){var d=e.target.closest('.dot');if(d){go(+d.getAttribute('data-i'));}});
+document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(){go(+b.getAttribute('data-go'));});});
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'){go(cur+1);}
+  else if(e.key==='ArrowLeft'){go(cur-1);}
+});
+var sx=null,sy=0;
+$('main').addEventListener('pointerdown',function(e){
+  if(e.target.closest('.nos,.opt,button')){sx=null;return;}
+  sx=e.clientX;sy=e.clientY;
+});
+$('main').addEventListener('pointerup',function(e){
+  if(sx===null){return;}
+  var dx=e.clientX-sx,dy=e.clientY-sy;sx=null;
+  if(Math.abs(dx)>60&&Math.abs(dy)<60){go(cur+(dx<0?1:-1));}
+});
+go(0);
+})();
+</script></body></html>
